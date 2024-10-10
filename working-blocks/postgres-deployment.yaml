@@ -1,3 +1,4 @@
+# making pg data persistent https://stackoverflow.com/questions/75223014/postgresql-data-on-k8s-cannot-be-made-persistent
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -21,10 +22,19 @@ spec:
         env:
           - name: POSTGRES_PASSWORD
             value: admin1
+          - name: PGDATA
+            value: /data  
         volumeMounts:
         - name: init-script
           mountPath: /docker-entrypoint-initdb.d
+        - name: persistence
+          mountPath: /data
+
       volumes:
       - name: init-script
         configMap:
           name: postgresql-init-script
+      - name: persistence
+        persistentVolumeClaim:
+          claimName: postgres-pv-claim 
+  
