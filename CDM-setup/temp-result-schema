@@ -1,0 +1,73 @@
+    --Group: ohdsi_app
+    CREATE ROLE webapi_sa
+      VALID UNTIL 'infinity';
+    COMMENT ON ROLE webapi_sa
+      IS 'Application group for OHDSI applications';
+
+
+          --Creating Database Login Roles
+    CREATE ROLE webapi_sa LOGIN ENCRYPTED PASSWORD 'md55cc9d81d14edce93a4630b7c885c6410'
+      VALID UNTIL 'infinity';
+    GRANT webapi_sa TO webapi_sa;
+    COMMENT ON ROLE webapi_sa
+      IS 'CDM user account for OHDSI applications';
+    ALTER ROLE webapi_sa WITH PASSWORD 'webapi_sa1';
+
+
+-- Create the results schema
+CREATE SCHEMA IF NOT EXISTS results;
+
+-- Create the temp schema
+CREATE SCHEMA IF NOT EXISTS temp;
+
+-- Grant permissions to the webapi_sa user
+GRANT USAGE ON SCHEMA results TO webapi_sa;
+GRANT SELECT ON ALL TABLES IN SCHEMA results TO webapi_sa;
+GRANT INSERT, DELETE, SELECT, UPDATE ON ALL TABLES IN SCHEMA results TO webapi_sa;
+
+GRANT USAGE ON SCHEMA temp TO webapi_sa;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA temp TO webapi_sa;
+
+
+--example
+GRANT SELECT, INSERT, UPDATE, DELETE ON schema1.table1, schema1.table2 TO webapi_sa;
+GRANT ALL PRIVILEGES ON schema2 TO webapi_sa;
+
+-----------------------------
+--------------------------------
+-- writing up the tabled schema . 
+-- Create the results schema
+CREATE SCHEMA IF NOT EXISTS cdm;
+
+-- Create the temp schema
+CREATE SCHEMA IF NOT EXISTS vocabulary;
+
+-- Create the results schema
+CREATE SCHEMA IF NOT EXISTS results;
+
+-- Create the temp schema
+CREATE SCHEMA IF NOT EXISTS temp;
+
+
+
+
+GRANT USAGE ON SCHEMA cdm TO webapi_sa;
+GRANT SELECT ON ALL TABLES IN SCHEMA cdm TO webapi_sa;
+GRANT INSERT, DELETE, SELECT, UPDATE ON ALL TABLES IN SCHEMA cdm TO webapi_sa;
+
+
+GRANT USAGE ON SCHEMA vocabulary TO webapi_sa;
+GRANT SELECT ON ALL TABLES IN SCHEMA vocabulary TO webapi_sa;
+GRANT INSERT, DELETE, SELECT, UPDATE ON ALL TABLES IN SCHEMA vocabulary TO webapi_sa;
+
+
+
+
+
+GRANT USAGE ON SCHEMA results TO webapi_sa;
+GRANT SELECT ON ALL TABLES IN SCHEMA results TO webapi_sa;
+GRANT INSERT, DELETE, SELECT, UPDATE ON ALL TABLES IN SCHEMA results TO webapi_sa;
+
+
+GRANT USAGE ON SCHEMA temp TO webapi_sa;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA temp TO webapi_sa;

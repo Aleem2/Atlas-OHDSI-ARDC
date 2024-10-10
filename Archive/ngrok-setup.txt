@@ -1,0 +1,40 @@
+
+Auth token = 2mjj5DkyJUMznLg9vSfeO1kOJl5_npfickSTPB1gcRFRT3QQ
+
+
+apikey = 2mjkIACGc8x2ztOa1a9mvu11FUE_276zAZ9EpkEXxEV95q3u3
+
+1 free domain = immune-crayfish-expert.ngrok-free.app
+
+
+
+helm install ngrok-ingress-controller ngrok/kubernetes-ingress-controller --namespace ngrok-ingress-controller --create-namespace --set credentials.apiKey=2mjkIACGc8x2ztOa1a9mvu11FUE_276zAZ9EpkEXxEV95q3u3 --set credentials.authtoken=2mjj5DkyJUMznLg9vSfeO1kOJl5_npfickSTPB1gcRFRT3QQ
+
+
+
+
+
+
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: atlas-rebuild
+  namespace: ohdsi
+spec:
+  ingressClassName: ngrok
+  rules:
+  - host: immune-crayfish-expert.ngrok-free.app
+    http:
+      - path: /atlas
+        pathType: Prefix
+        backend:
+          service: atlas
+            port:
+              number: 80
+      - path: /WebAPI
+        pathType: Prefix
+        backend:
+          service: webapi
+            port:
+              number: 80

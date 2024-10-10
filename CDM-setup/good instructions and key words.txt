@@ -1,0 +1,14 @@
+
+WebAPI’s database is completely independent from CDM sources (the database that contains the CDM/Vocabulary tables and the results schema for WebAPI analyses). When you say ‘WebAPI tables’, it sounds (to me) like you’re referring to tables that are in the WebAPI database…the WebAPI database tables are automatically managed so you do not need to do any create opertaions to any WebAPI table. You do, however, need to insert records into the webapi.SOURCE and SOURCE_DAIMON tables to register CDMs that you have set up.
+
+CDM tables need to set up manually, which does involve fetching a vocabulary from Athena, and converting your own patient-level data into the CDM format and loading it. You would use the DDL from the CommonDataModel repository to create the tables.
+
+Within the CDM database, you will need to create the WebAPI results schema. Instructions on feting the DDL from WebAPI and subsequent INSERTs into WebAPI to register a CDM source for use in WebAPI can be found here 19.
+
+
+https://forums.ohdsi.org/t/how-to-populate-webapi-tables/12177/2
+
+
+
+
+

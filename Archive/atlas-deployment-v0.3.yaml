@@ -1,0 +1,52 @@
+#changelog
+#0.1 applied config file
+#0.2 applied WEBAPI_URL=http://*.*.*.*:8080/WebAPI/
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: atlas
+  name: atlas
+  #namespace: ohdsi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: atlas
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: atlas
+    spec:
+      containers:
+      - image: ohdsi/atlas:2.13.0
+        name: atlas
+        env:
+        - name: WEBAPI_URL
+          value: https://immune-crayfish-expert.ngrok-free.app/WebAPI/
+        - name: CONFIG_PATH
+          value: /usr/share/nginx/html/atlas/js/config-local.js
+        
+        command: ["sh"]
+        args: ["-c", "id; cat /usr/share/nginx/html/atlas/js1/config-local.js > /usr/share/nginx/html/atlas/js/config-local.js; echo copied; exec nginx -g 'daemon off;'"]
+
+        volumeMounts:
+        - name: init-script
+          mountPath: /usr/share/nginx/html/atlas/js1/config-local.js
+          subPath: config-local.js
+
+          
+        securityContext:
+          readOnlyRootFilesystem: false
+          runAsGroup: 101
+          runAsUser: 101
+
+        resources: {}
+      volumes:
+      - name: init-script
+        configMap:
+            name: atlas-configmap
+
+status: {}

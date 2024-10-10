@@ -1,0 +1,252 @@
+postgresql:
+  auth:
+    postgresPassword: "ohdsi-pg-pw"
+  primary:
+    initdb:
+      scripts:
+        00-init-db-for-basic-security.sh: |
+          #!/bin/bash
+          set -e
+          export PGPASSWORD=${POSTGRES_PASSWORD}
+          export PGDATABASE=${POSTGRES_DATABASE}
+          psql -v ON_ERROR_STOP=1 <<-EOSQL
+              CREATE SCHEMA IF NOT EXISTS ohdsi;
+
+              CREATE TABLE IF NOT EXISTS ohdsi.basic_security_users
+              (
+                  username    character varying(255),
+                  password    character varying(255),
+                  first_name  character varying(255),
+                  middle_name character varying(255),
+                  last_name   character varying(255),
+                  email       character varying(255)
+              );
+
+              -- note that we escaped the dollar signs to prevent '\$2: unbound variable' errors
+              -- bcrypt 'pass123' = '\$2a\$10\$7RGwXpZ9mEb8uVPs/scj3OykBTsdtb8QyTE7Os6m8Ty7n56et.1Oy'
+              INSERT INTO ohdsi.basic_security_users (username, password, email)
+              VALUES ('test', '\$2a\$10\$7RGwXpZ9mEb8uVPs/scj3OykBTsdtb8QyTE7Os6m8Ty7n56et.1Oy', 'test@example.com')
+          EOSQL
+    extraEnvVars:
+      - name: OHDSI_ADMIN_PASSWORD
+        value: admin1
+
+cdmInitJob:
+  enabled: true
+
+webApi:
+  podDisruptionBudget:
+    enabled: true
+  db:
+    schema: ohdsi
+  auth:
+    basic:
+      enabled: true
+    openid:
+      enabled: true
+      clientId: "ohdsi"
+      clientSecret: "a5f55a03-ca7d-4a52-a352-498defb2f6fa"
+      oidUrl: "https://auth.example.com/auth/realms/OHDSI/.well-known/openid-configuration"
+  extraEnv:
+    - name: "JAVA_OPTS"
+      value: "-XX:MinRAMPercentage=60.0 -XX:MaxRAMPercentage=80.0"
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: topology.kubernetes.io/zone
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/component: webapi
+
+ingress:
+  enabled: true
+
+atlas:
+  constructWebApiUrlFromIngress: false
+  replicaCount: 2
+  podDisruptionBudget:
+    enabled: true
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: topology.kubernetes.io/zone
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/component: atlas
+  config:
+    local: |
+      define([], function () {
+        var configLocal = {};
+
+        // clearing local storage otherwise source cache will obscure the override settings
+        localStorage.clear();
+
+        var getUrl = window.location;
+        var baseUrl = getUrl.protocol + "//" + getUrl.host;
+
+        // WebAPI
+        configLocal.api = {
+          name: "OHDSI",
+          url: baseUrl + "/WebAPI/",
+        };
+
+        configLocal.cohortComparisonResultsEnabled = false;
+        configLocal.userAuthenticationEnabled = true;
+        configLocal.plpResultsEnabled = false;
+
+        configLocal.authProviders = [
+          {
+            name: "Basic Security Login",
+            url: "user/login/db",
+            ajax: true,
+            icon: "fa fa-database",
+            isUseCredentialsForm: true
+          },
+          {
+            name: "OpenID Connect",
+            url: "user/login/openid",
+            ajax: false,
+            icon: "fa fa-openid",
+          },
+        ];
+
+        return configLocal;
+      });
+
+loadCohortDefinitionsJob:
+  enabled: true
+  cohortDefinitions:
+    - |
+      {
+        "name": "A sample cohort",
+        "description": "[acronym=SAMPLE-F] Sample Cohort containing only female patients older than 18 years.",
+        "expressionType": "SIMPLE_EXPRESSION",
+        "expression": {
+          "ConceptSets": [],
+          "PrimaryCriteria": {
+            "CriteriaList": [
+              {
+                "ObservationPeriod": {
+                  "First": true
+                }
+              }
+            ],
+            "ObservationWindow": {
+              "PriorDays": 0,
+              "PostDays": 0
+            },
+            "PrimaryCriteriaLimit": {
+              "Type": "First"
+            }
+          },
+          "QualifiedLimit": {
+            "Type": "First"
+          },
+          "ExpressionLimit": {
+            "Type": "First"
+          },
+          "InclusionRules": [
+            {
+              "name": "Older than 18",
+              "expression": {
+                "Type": "ALL",
+                "CriteriaList": [],
+                "DemographicCriteriaList": [
+                  {
+                    "Age": {
+                      "Value": 18,
+                      "Op": "gt"
+                    },
+                    "Gender": [
+                      {
+                        "CONCEPT_CODE": "F",
+                        "CONCEPT_ID": 8532,
+                        "CONCEPT_NAME": "FEMALE",
+                        "DOMAIN_ID": "Gender",
+                        "INVALID_REASON_CAPTION": "Unknown",
+                        "STANDARD_CONCEPT_CAPTION": "Unknown",
+                        "VOCABULARY_ID": "Gender"
+                      }
+                    ]
+                  }
+                ],
+                "Groups": []
+              }
+            }
+          ],
+          "CensoringCriteria": [],
+          "CollapseSettings": {
+            "CollapseType": "ERA",
+            "EraPad": 0
+          },
+          "CensorWindow": {},
+          "cdmVersionRange": ">=5.0.0"
+        }
+      }
+    - |
+      {
+        "name": "A second sample cohort",
+        "description": "[acronym=SAMPLE-M] Sample Cohort containing only male patients younger than 18 years.",
+        "expressionType": "SIMPLE_EXPRESSION",
+        "expression": {
+          "ConceptSets": [],
+          "PrimaryCriteria": {
+            "CriteriaList": [
+              {
+                "ObservationPeriod": {
+                  "First": true
+                }
+              }
+            ],
+            "ObservationWindow": {
+              "PriorDays": 0,
+              "PostDays": 0
+            },
+            "PrimaryCriteriaLimit": {
+              "Type": "First"
+            }
+          },
+          "QualifiedLimit": {
+            "Type": "First"
+          },
+          "ExpressionLimit": {
+            "Type": "First"
+          },
+          "InclusionRules": [
+            {
+              "name": "Younger than 18",
+              "expression": {
+                "Type": "ALL",
+                "CriteriaList": [],
+                "DemographicCriteriaList": [
+                  {
+                    "Age": {
+                      "Value": 18,
+                      "Op": "lt"
+                    },
+                    "Gender": [
+                      {
+                        "CONCEPT_CODE": "M",
+                        "CONCEPT_ID": 8507,
+                        "CONCEPT_NAME": "MALE",
+                        "DOMAIN_ID": "Gender",
+                        "INVALID_REASON_CAPTION": "Unknown",
+                        "STANDARD_CONCEPT_CAPTION": "Unknown",
+                        "VOCABULARY_ID": "Gender"
+                      }
+                    ]
+                  }
+                ],
+                "Groups": []
+              }
+            }
+          ],
+          "CensoringCriteria": [],
+          "CollapseSettings": {
+            "CollapseType": "ERA",
+            "EraPad": 0
+          },
+          "CensorWindow": {},
+          "cdmVersionRange": ">=5.0.0"
+        }
+      }

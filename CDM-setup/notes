@@ -1,0 +1,96 @@
+Achilles usage
+https://github.com/OHDSI/Achilles/wiki/Additional-instructions-for-Linux
+
+Achilles container
+https://hub.docker.com/r/ohdsi/broadsea-achilles
+
+command line script for Achilles
+Running Achilles on Linux
+Full syntax for createConnectionDetails (for postgresql -- where database is omop, schema is omop, and user is achilles and password is achilles) is: 
+
+
+connectionDetails <- createConnectionDetails(dbms="postgresql",server="postgres/omop",port="5432", schema="omop",user="achilles",password="achilles")
+
+
+Type in R: ?createConnectionDetails for full syntax
+
+
+
+# How to run Achilles
+
+https://github.com/OHDSI/Broadsea-Achilles
+
+
+docker run \
+    -e ACHILLES_DB_URI="postgresql://postgres:5432/" -e ACHILLES_DB_USERNAME="webapi_sa" -e ACHILLES_DB_PASSWORD="webapi_sa" docker.io/ohdsi/broadsea-achilles:master
+
+
+This should be a job init job in Kuberentes. 
+
+
+Synthetic data has to be loaded into the Postgres for any action to happen. 
+
+Below URL is second step 
+https://github.com/OHDSI/WebAPI/wiki/CDM-Configuration
+
+The first step is get hands on some data. 
+THis is done with another Github resource which talks about R-studio, devtools,.... 
+
+https://github.com/OHDSI/CommonDataModel
+
+I attempted to do it via R. But it has too many dependencies and not enough space on my computer. 
+So. I will attemp to use the DDLs directly. 
+https://github.com/OHDSI/CommonDataModel/tree/v5.4.0/inst/ddl/5.4/postgresql
+
+
+
+
+
+# You first need to populate your OMOP CDM tables with your data before running Achilles. The steps should be:
+
+Run OMOP CDM DDL
+Load OMOP Vocabularies
+Run OMOP CDM Constraints and Indexes
+Run ETL from your source data to OMOP
+Run data quality/validation tools (DataQualityDashboard, Achilles)
+Which instructions were you following? We might need to update those.
+
+
+some sample data synpuf
+https://forums.ohdsi.org/t/1k-sample-of-simulated-cms-synpuf-data-in-cdmv5-format-available-for-download/728
+
+
+#----------------------------
+
+Overall data management process and Atlas framework
+
+https://www.ohdsi.org/wp-content/uploads/2019/09/OMOP-Common-Data-Model-Extract-Transform-Load.pdf
+
+
+#-------------------------------
+
+*** Postgres walk through with synpuf (A - Z)
+
+https://github.com/OHDSI/ETL-CMS/blob/master/python_etl/postgres_instructions.md
+
+
+The files can be downloaded from here instead. https://caruscloud.uniklinikum-dresden.de/index.php/s/Qog8B5WCTHFHmjW/download
+
+#------------------------------------
+
+
+Date 9/10/2024
+
+# recapturing requirements and starting from scratch. 
+# There are ETL tools to feed the data in
+# two types of data are needed the Vocabulary and the CDM formatted data. 
+# Easiest bet would be to first get the Vocabulary in. But before that some schema's have to be set. 
+# Some user requirements are there. 
+# 
+
+
+
+So, set up your CDM database, create a cdm schema,
+https://github.com/OHDSI/WebAPI/wiki/CDM-Configuration 
+
+load the vocabulary and patient level data into it, and then add the SOURCE and SOURCE_DAIMON records to WebAPI so that you can query against it via WebAPI.

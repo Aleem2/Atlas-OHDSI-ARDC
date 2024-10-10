@@ -1,0 +1,53 @@
+Docker run ohdsi/webapi
+
+
+
+
+https://api.ohdsi.org/WebAPI
+
+WEBAPI_URL=https://api.ohdsi.org/WebAPI/
+
+--env=WEBAPI_URL=https://api.ohdsi.org/WebAPI/
+
+
+$ docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+
+SELECT version();
+
+
+
+#-----------------------------
+Working on OHDSI 
+
+kubectl run ohdsi --image=ohdsi/webapi -- sleep infinity
+
+base folder is /var/lib/ohdsi/webapi
+
+http://localhost:8080/WebAPI/source/sources 17 (replaced the local host with our server ip), I am getting the "HTTP Status 404 - Not Found).
+
+
+
+?ApplicationName=webapi
+
+
+#Loading CDM data onto webapi. 
+
+
+After creating the postgres and webapi some data sources have to be created also known as CDM. The detailed guide can be found at https://github.com/OHDSI/WebAPI/wiki/CDM-Configuration
+
+I need to create new shemas ... to add those two tables or are they already existing?
+
+
+https://immune-crayfish-expert.ngrok-free.app/WebAPI/ddl/results?dialect=postgresql&schema=results&vocabSchema=vocabulary&tempSchema=temp&initConceptHierarchy=true
+
+
+
+
+Atlas setup
+
+https://github.com/OHDSI/Atlas/wiki/Atlas-Setup-Guide
+
+
+
+CDM Configuration
+https://github.com/OHDSI/WebAPI/wiki/CDM-Configuration

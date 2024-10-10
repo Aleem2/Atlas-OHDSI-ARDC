@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: atlas
+  name: atlas
+  namespace: ohdsi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: atlas
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: atlas
+
+    spec:
+      containers:
+      - image: ohdsi/atlas:2.14.0
+        name: atlas
+        env:
+        - name: WEBAPI_URL
+          value: http://10.96.23.8:8080/WebAPI/
+        - name: CONFIG_PATH
+          value: /usr/share/nginx/html/atlas/js1/config-local.js
+        command: ["sh"]
+        args: ["-c", "cat /usr/share/nginx/html/atlas/js1/config-local.js > /usr/share/nginx/html/atlas/js/local.config.js; echo copied; exec nginx -g 'daemon off;'; nginx -s reload"]
+        ##cat /usr/share/nginx/html/atlas/js2/default.js > /etc/nginx/conf.d/default.conf ;
+
+        volumeMounts:
+        - name: init-script
+          mountPath: /usr/share/nginx/html/atlas/js1/config-local.js
+          subPath: config-local.js
+        - name: config2
+          mountPath: /usr/share/nginx/html/atlas/js2/default.js
+          subPath: default.js
+
+          
+        #securityContext:
+        #  readOnlyRootFilesystem: false
+        #  runAsGroup: 101
+        #  runAsUser: 101
+
+        resources: {}
+      volumes:
+      - name: init-script
+        configMap:
+            name: atlas-configmap
+      - name: config2
+        configMap:
+            name: atlas-configmap2
+status: {}

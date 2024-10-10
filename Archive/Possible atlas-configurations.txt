@@ -1,0 +1,67 @@
+# this is from internet.
+
+module.exports = {
+  server: {
+    port: 8080, // Adjust the port as needed
+    host: "0.0.0.0" // Listen on all interfaces
+  },
+
+  database: {
+    dialect: "postgres", // Use PostgreSQL
+    host: "postgres",
+    port: 5432,
+    database: "ohdsi",
+    username: "ohdsi_admin_user",
+    password: "admin1"
+  },
+
+  authentication: {
+    enabled: false, // Enable authentication
+    secret: "admin1"
+  },
+
+  source: {
+    baseUrl: "http://webapi:8080"
+  }
+}
+
+
+# --- from the helm implementation. 
+  config-local.js: |
+    define([], function () {
+      var configLocal = {};
+
+      // clearing local storage otherwise source cache will obscure the override settings
+      localStorage.clear();
+
+      var getUrl = window.location;
+      var baseUrl = getUrl.protocol + "//" + getUrl.host;
+
+      // WebAPI
+      configLocal.api = {
+        name: "OHDSI",
+        url: baseUrl + "/WebAPI/",
+      };
+
+      configLocal.cohortComparisonResultsEnabled = false;
+      configLocal.userAuthenticationEnabled = true;
+      configLocal.plpResultsEnabled = false;
+
+      configLocal.authProviders = [
+        {
+          name: "Basic Security Login",
+          url: "user/login/db",
+          ajax: true,
+          icon: "fa fa-database",
+          isUseCredentialsForm: true
+        },
+        {
+          name: "OpenID Connect",
+          url: "user/login/openid",
+          ajax: false,
+          icon: "fa fa-openid",
+        },
+      ];
+
+      return configLocal;
+    });

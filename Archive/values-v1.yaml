@@ -1,0 +1,668 @@
+# image pull secrets used by all pods
+imagePullSecrets: []
+# partially override the release name
+nameOverride: ""
+# fully override the release name
+fullnameOverride: ""
+
+# annotations applied to all deployments and jobs
+commonAnnotations: []
+
+# see <https://github.com/bitnami/charts/tree/master/bitnami/postgresql> for details
+postgresql:
+  # enable an included PostgreSQL DB.
+  # if set to `false`, the values under `webApi.db` are used
+  enabled: true
+  auth:
+    # name of the database to create
+    # see: <https://github.com/bitnami/containers/tree/main/bitnami/postgresql#creating-a-database-on-first-run>
+    database: "ohdsi"
+    #  Name of existing secret to use for PostgreSQL credentials
+    # `auth.postgresPassword`, `auth.password`, and `auth.replicationPassword` will be ignored and picked up from this secret
+    # The secret must contain the keys `postgres-password` (which is the password for "postgres" admin user),
+    # `password` (which is the password for the custom user to create when `auth.username` is set),
+    # and `replication-password` (which is the password for replication user).
+    # The secret might also contains the key `ldap-password` if LDAP is enabled. `ldap.bind_password` will be ignored and
+    # picked from this secret in this case.
+    # The value is evaluated as a template.
+    existingSecret: "rogerstest"
+    # Assign a password to the "postgres" admin user. Otherwise, remote access will be blocked for this user
+    enablePostgresUser: true
+    # Name for a custom user to create
+    username: "postgres"
+    # Password for the custom user to create
+    password: "rogerstest"
+  primary:
+    containerSecurityContext:
+      readOnlyRootFilesystem: true
+    initdb:
+      # Dictionary of initdb scripts
+      # Specify dictionary of scripts to be run at first boot
+      scripts:
+        {}
+        # 00-init-ohdsi-admin-user.sh: |
+        #   #!/bin/bash
+        #   set -e
+        #   psql -v ON_ERROR_STOP=1 <<-EOSQL
+        #       CREATE ROLE ohdsi_admin_user LOGIN PASSWORD '${OHDSI_ADMIN_PASSWORD}' VALID UNTIL 'infinity';
+        #       COMMENT ON ROLE ohdsi_admin_user IS 'Admin user account for OHDSI applications';
+        #       CREATE ROLE ohdsi_admin CREATEDB REPLICATION VALID UNTIL 'infinity';
+        #       COMMENT ON ROLE ohdsi_admin IS 'Administration group for OHDSI applications';
+        #       GRANT ohdsi_admin TO ohdsi_admin_user;
+        #       GRANT ALL ON DATABASE ${POSTGRES_DB} TO GROUP ohdsi_admin;
+        #   EOSQL
+    # extraEnvVars:
+    #   - name: OHDSI_ADMIN_PASSWORD
+    #     value: admin1
+
+# container security context applied to init containers and the Helm test pods
+restrictedContainerSecurityContext: # +doc-gen:ignore
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  privileged: false
+  capabilities:
+    drop:
+      - ALL
+  runAsNonRoot: true
+  runAsUser: 65534
+  runAsGroup: 65534
+  seccompProfile:
+    type: RuntimeDefault
+
+webApi:
+  # enable the OHDSI WebAPI deployment
+  enabled: true
+  # number of pod replicas for the WebAPI
+  replicaCount: 1
+  # the WebAPI image
+  image: # +doc-gen:ignore
+    registry: docker.io
+    repository: ohdsi/webapi
+    tag: 2.14.0@sha256:582b59b186fde5936081c1df6e41cba53e45e112d5b4875ddfda1e4dee4b2981
+    pullPolicy: IfNotPresent
+
+  waitForDatabaseInitContainer:
+    # image to use for the init container which waits until the database
+    # is ready to accept connections
+    image: # +doc-gen:ignore
+      registry: docker.io
+      repository: bitnami/postgresql
+      tag: 16.3.0-debian-12-r23@sha256:865e341baf49006e32b3e72254a15a81c939178cb9c48fcd9faf1c0ac4b49664
+      pullPolicy: IfNotPresent
+
+  serviceAccount:
+    # Specifies whether a service account should be created.
+    create: true
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+    # whether to automount the SA token
+    automountServiceAccountToken: false
+
+  podDisruptionBudget:
+    # create a PodDisruptionBudget resource for the OHDSI Atlas pods
+    enabled: false
+    # Minimum available instances; ignored if there is no PodDisruptionBudget
+    minAvailable: 1
+    # Maximum unavailable instances; ignored if there is no PodDisruptionBudget
+    maxUnavailable: ""
+
+  db:
+    # database hostname of an external database. Only used if `postgresql.enabled` is set to `false`.
+    host: "host.example.com"
+    # port used to connect to the postgres DB
+    port: 5432
+    # name of the database inside. If postgresql.enabled=true, then postgresql.postgresqlDatabase is used
+    database: "ohdsi"
+    # username used to connect to the DB. Note that this name is currently used even if postgresql.enabled=true
+    username: "postgres"
+    # the database password. Only used if postgresql.enabled=false, otherwise the secret created by the postgresql chart is used
+    password: "postgres"
+    # name of an existing secret containing the password to the DB.
+    existingSecret: ""
+    # name of the key in `webApi.db.existingSecret` to use as the password to the DB.
+    existingSecretKey: "postgresql-postgres-password"
+    # schema used for the WebAPI's tables. Also referred to as the "OHDSI schema"
+    schema: "ohdsi"
+
+  auth:
+    openid:
+      # enable securing the WebAPI via an OpenId connect provider.
+      # make sure to also configure `atlas.config.local` appropriately to enable the auth provider in ATLAS.
+      # See "[Securing Atlas using OpenID Connect](#securing-atlas-using-openid-connect)" below
+      enabled: false
+      # Required. Points to the openid-configuration endpoint of the provider,
+      # e.g. `https://auth.example.com/auth/realms/OHDSI/.well-known/openid-configuration`
+      oidUrl: ""
+      # the client id
+      clientId: ""
+      # the client secret
+      clientSecret: ""
+      # name of an existing Kubernetes secret containing the OpenId client secret
+      existingSecret: ""
+      # name of the key inside the secret whose value is the OpenId client secret
+      existingSecretKey: "webapi-openid-client-secret"
+      # URL including the OHDSI WebAPI oauth callback, e.g. `https://example.com/WebAPI/user/oauth/callback`.
+      # If unset, a URL is constructed from `ingress.hosts[0]`
+      callbackApi: ""
+      # URL including the callback URL referring to the ATLAS UI, e.g. `https://example.com/atlas/index.html#/welcome/`.
+      # If unset, a URL is constructed from `ingress.hosts[0]`
+      callbackUI: ""
+      # URL to be redirected to when logging out, e.g. `https://example.com/atlas/index.html#/welcome/`.
+      # If unset, a URL is constructed from `ingress.hosts[0]`
+      logoutUrl: ""
+      # OpenID redirect URL, e.g. `https://example.com/atlas/index.html#/welcome/null`
+      # If unset, a URL is constructed from `ingress.hosts[0]`
+      redirectUrl: ""
+    basic:
+      # enable securing access to the WebAPI using basic security configuration.
+      # See <https://github.com/OHDSI/WebAPI/wiki/Basic-Security-Configuration> for details.
+      enabled: false
+      # schema inside the database specified in `.Values.webApi.db` which contains tables used for querying basic
+      # security users. If unset, defaults to `.Values.webApi.db.schema`.
+      schema: ""
+      # SQL query used to fetch entries in the basic security table by their username. Requires a table called `basic_security_users`
+      # to exist within the above schema, see [kitchen-sink-test-values.yamll](ci/kitchen-sink-test-values.yaml)
+      # for an example DB setup. Evaluated as a template.
+      query: >-
+        SELECT password, first_name AS firstname, middle_name AS middlename, last_name AS lastname, username
+        FROM basic_security_users
+        WHERE username = ?
+
+  # annotations applied to the pod
+  podAnnotations: {}
+
+  cors:
+    # whether CORS is enabled for the WebAPI. Sets the `security.cors.enabled` property.
+    enabled: false
+    # value of the `Access-Control-Allow-Origin` header. Sets the `security.origin` property.
+    # set to `*` to allow requests from all origins.
+    # if `cors.enabled=true`, `cors.allowedOrigin=""` and `ingress.enabled=true`, then `ingress.hosts[0].host` is used.
+    allowedOrigin: ""
+
+  # security context for the pod
+  podSecurityContext:
+    {}
+    # fsGroup: 2000
+
+  # security context for the WebAPI container
+  securityContext: # +doc-gen:ignore
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 65534
+    runAsGroup: 65534
+    seccompProfile:
+      type: RuntimeDefault
+
+  # the service used to expose the WebAPI web port
+  service: # +doc-gen:break
+    type: ClusterIP
+    port: 8080
+
+  # set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "large"
+
+  # resource requests and limits for the container. <br>
+  # 2Gi+ of RAM are recommended (<https://github.com/OHDSI/WebAPI/issues/1811#issuecomment-792988811>) <br>
+  # You might also want to use `webApi.extraEnv` to set `MinRAMPercentage` and `MaxRAMPercentage`:
+  #
+  # Example:
+  # helm template charts/ohdsi \
+  #    --set webApi.extraEnv[0].name="JAVA_OPTS" \
+  #    --set webApi.extraEnv[0].value="-XX:MinRAMPercentage=60.0 -XX:MaxRAMPercentage=80.0"
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+  # readiness probe
+  readinessProbe: # +doc-gen:ignore
+    failureThreshold: 5
+    initialDelaySeconds: 10
+    periodSeconds: 15
+    successThreshold: 1
+    timeoutSeconds: 15
+  # startup probe
+  startupProbe: # +doc-gen:ignore
+    failureThreshold: 10
+    initialDelaySeconds: 60
+    periodSeconds: 20
+    successThreshold: 1
+    timeoutSeconds: 30
+  # liveness probe
+  livenessProbe: # +doc-gen:ignore
+    failureThreshold: 5
+    initialDelaySeconds: 10
+    periodSeconds: 15
+    successThreshold: 1
+    timeoutSeconds: 15
+
+  # node labels for pods assignment
+  # see: <https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/>
+  nodeSelector: {}
+
+  # tolerations for pods assignment
+  # see: <https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/>
+  tolerations: []
+
+  # affinity for pods assignment
+  # see: <https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity>
+  affinity: {}
+
+  # pod topology spread configuration
+  # see: <https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#api>
+  topologySpreadConstraints:
+    []
+    # - maxSkew: 1
+    #   topologyKey: topology.kubernetes.io/zone
+    #   whenUnsatisfiable: ScheduleAnyway
+    #   labelSelector:
+    #     matchLabels:
+    #       app.kubernetes.io/component: webapi
+    #       app.kubernetes.io/instance: ohdsi
+
+  # extra environment variables
+  extraEnv:
+    []
+    # - name: "TEST"
+    #   value: "TEST"
+
+  metrics:
+    serviceMonitor:
+      # if enabled, creates a ServiceMonitor instance for Prometheus Operator-based monitoring
+      # this also implicitly enables the OpenTelemetry Java agent and exposes its metrics port
+      # note that this overrides the `JAVA_OPTS` environment variable with `"-javaagent:/var/lib/ohdsi/webapi/opentelemetry-javaagent.jar"`
+      enabled: false
+      # additional labels to apply to the ServiceMonitor object, e.g. `release: kube-prometheus-stack`
+      additionalLabels: {}
+      # namespace: monitoring
+      # interval: 30s
+      # scrapeTimeout: 10s
+
+  tracing:
+    # if enabled, export traces to the specified endpoint.
+    # this also implicitly enables the OpenTelemetry Java agent by setting the
+    # `JAVA_OPTS` environment variable to `"-javaagent:/var/lib/ohdsi/webapi/opentelemetry-javaagent.jar"`
+    enabled: false
+    jaeger:
+      # specify the transport protocol. Sets the `OTEL_EXPORTER_JAEGER_PROTOCOL` env var
+      protocol: "grpc"
+      # full URL of the Jaeger HTTP endpoint. Sets the `OTEL_EXPORTER_JAEGER_ENDPOINT` env var
+      endpoint: http://simplest-collector.observability.svc:14250 # http://localhost:14250
+      # hostname of the Jaeger agenr. Sets the `OTEL_EXPORTER_JAEGER_AGENT_HOST` env var
+      agentHost: localhost
+      # udp/thrift.compact port of the Jaeger agent. Sets the `OTEL_EXPORTER_JAEGER_AGENT_PORT` env var
+      agentPort: 6831
+
+atlas:
+  # enable the OHDSI Atlas deployment
+  enabled: true
+  # number of replicas
+  replicaCount: 1
+  # the Atlas image
+  image: # +doc-gen:ignore
+    registry: docker.io
+    repository: ohdsi/atlas
+    tag: 2.14.1@sha256:bd095ed794a6619f877d72c13ecfc22c8bb8a863937392857866e4bd6015157f
+    pullPolicy: IfNotPresent
+
+  podDisruptionBudget:
+    # create a PodDisruptionBudget resource for the OHDSI Atlas pods
+    enabled: false
+    # Minimum available instances; ignored if there is no PodDisruptionBudget
+    minAvailable: 1
+    # Maximum unavailable instances; ignored if there is no PodDisruptionBudget
+    maxUnavailable: ""
+
+  serviceAccount:
+    # Specifies whether a service account should be created.
+    create: true
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+    # whether to automount the SA token
+    automountServiceAccountToken: false
+
+  # the base URL of the OHDSI WebAPI, e.g. `https://example.com/WebAPI`
+  # if this value is not set but `ingress.enabled=true` and `constructWebApiUrlFromIngress=true`,
+  # then this URL is constructed from `ingress`
+  webApiUrl: ""
+
+  # if enabled, sets the WebAPI URL to `http://ingress.hosts[0]/WebAPI`
+  constructWebApiUrlFromIngress: true
+
+  # annotations for the pod
+  podAnnotations: {}
+
+  # security context for the pod
+  podSecurityContext:
+    {}
+    # fsGroup: 2000
+
+  # ContainerSecurityContext for the Atlas container
+  securityContext: # +doc-gen:ignore
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: false
+    runAsNonRoot: true
+    runAsUser: 101
+    runAsGroup: 101
+    seccompProfile:
+      type: RuntimeDefault
+  # the service used to expose the Atlas web port
+  service: # +doc-gen:break
+    type: ClusterIP
+    port: 8080
+
+  # set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "small"
+
+  # configure the resource requests and limits
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+  # readiness probe
+  readinessProbe: # +doc-gen:ignore
+    failureThreshold: 5
+    initialDelaySeconds: 30
+    periodSeconds: 15
+    successThreshold: 1
+    timeoutSeconds: 15
+  # liveness probe
+  livenessProbe: # +doc-gen:ignore
+    failureThreshold: 5
+    initialDelaySeconds: 30
+    periodSeconds: 15
+    successThreshold: 1
+    timeoutSeconds: 15
+
+  # node labels for pods assignment
+  # see: <https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/>
+  nodeSelector: {}
+
+  # tolerations for pods assignment
+  # see: <https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/>
+  tolerations: []
+
+  # affinity for pods assignment
+  # see: <https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity>
+  affinity: {}
+
+  # pod topology spread configuration
+  # see: <https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#api>
+  topologySpreadConstraints:
+    []
+    # - maxSkew: 1
+    #   topologyKey: topology.kubernetes.io/zone
+    #   whenUnsatisfiable: ScheduleAnyway
+    #   labelSelector:
+    #     matchLabels:
+    #       app.kubernetes.io/component: webapi
+    #       app.kubernetes.io/instance: ohdsi
+
+  # extra environment variables
+  extraEnv:
+    []
+    # - name: "TEST"
+    #   value: "TEST"
+
+  # override the config files to configure Atlas
+  config:
+    # this value is expected to contain the config-local.js contents
+    local: ""
+
+# define a custom init container to be run as part of the installation.
+cdmInitJob:
+  # if enabled, create a Kubernetes Job running the specified container
+  # see [cdm-init-job.yaml](templates/cdm-init-job.yaml) for the env vars
+  # that are passed by default
+  enabled: false
+  # the container image used to create the CDM initialization job
+  image: # +doc-gen:break
+    registry: docker.io
+    repository: docker/whalesay
+    tag: latest@sha256:178598e51a26abbc958b8a2e48825c90bc22e641de3d31e18aaf55f3258ba93b
+    pullPolicy: IfNotPresent
+
+  # the number of retries before considering the Job as failed
+  backoffLimit: 6
+
+  # restartPolicy of the job <https://kubernetes.io/docs/concepts/workloads/controllers/job/#handling-pod-and-container-failures>
+  restartPolicy: Never
+
+  # clean up Job and dependent objects after job completion <https://kubernetes.io/docs/concepts/workloads/controllers/job/#ttl-mechanism-for-finished-jobs>
+  ttlSecondsAfterFinished: 120
+
+  # annotations set on the cdm-init pod
+  podAnnotations: {}
+
+  # PodSecurityContext for the cdm-init pod
+  podSecurityContext:
+    {}
+    # fsGroup: 2000
+
+  # ContainerSecurityContext for the cdm-init container
+  securityContext: {}
+
+  # set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "medium"
+
+  # configure the resource requests and limits
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+  # extra environment variables to set
+  extraEnv:
+    []
+    # - name: "TEST"
+    #   value: "TEST"
+
+# by default, Achilles connects to the same DB that the WebAPI uses
+# this assumes that it contains both the WebAPI schema (`ohdsi`) as well
+# as any CDM schemas. See <https://github.com/OHDSI/Broadsea-Achilles> for details on the container used.
+achilles:
+  # whether or not to enable the Achilles cron job
+  enabled: true
+  # when to run the Achilles job. See <https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/#cron-schedule-syntax>
+  schedule: "@daily"
+  # the Achilles image
+  image: # +doc-gen:ignore
+    registry: docker.io
+    repository: ohdsi/broadsea-achilles
+    tag: sha-bccd396@sha256:a881063aff6200d0d368ec30eb633381465fb8aa15e7d7138b7d48b6256a6feb
+    pullPolicy: IfNotPresent
+  schemas:
+    # name of the schema containing the OMOP CDM. Equivalent to the Achilles `ACHILLES_CDM_SCHEMA` env var.
+    cdm: "synpuf_cdm"
+    # name of the schema containing the vocabulary. Equivalent to the Achilles `ACHILLES_VOCAB_SCHEMA` env var.
+    vocab: "synpuf_vocab"
+    # name of the schema containing the cohort generation results. Equivalent to the Achilles `ACHILLES_RES_SCHEMA` env var.
+    res: "synpuf_results"
+
+  # The number of successful finished jobs to retain. Value must be non-negative integer.
+  successfulJobsHistoryLimit: 3
+
+  # The number of failed finished jobs to retain. Value must be non-negative integer.
+  failedJobsHistoryLimit: 1
+
+  serviceAccount:
+    # Specifies whether a service account should be created.
+    create: true
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+    # whether to automount the SA token
+    automountServiceAccountToken: false
+
+  # Specifies how to treat concurrent executions of a Job. Valid values are:
+  # - "Allow" (default): allows CronJobs to run concurrently;
+  # - "Forbid": forbids concurrent runs, skipping next run if previous run hasn't finished yet;
+  # - "Replace": cancels currently running job and replaces it with a new one
+  concurrencyPolicy: Forbid
+
+  # version of the CDM. Equivalent to the Achilles `ACHILLES_CDM_VERSION` env var.
+  cdmVersion: "5.3"
+
+  # the CDM source name. Equivalent to the Achilles `ACHILLES_SOURCE` env var.
+  sourceName: "synpuf-5.3.1"
+
+  # ContainerSecurityContext for the Achilles container
+  securityContext: # +doc-gen:ignore
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    runAsNonRoot: true
+    runAsUser: 10001
+    runAsGroup: 10001
+    seccompProfile:
+      type: RuntimeDefault
+
+  # extra environment variables to pass to the Achilles container
+  extraEnv:
+    []
+    # - name: "TEST"
+    #   value: "TEST"
+
+  # annotations applied to the pod managed by this CronJob
+  podAnnotations: {}
+
+  # set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "small"
+
+  # configure the resource requests and limits
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+ingress:
+  # whether to create an Ingress to expose the Atlas web interface
+  enabled: false
+  # provide any additional annotations which may be required. Evaluated as a template.
+  annotations:
+    {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: ohdsi.127.0.0.1.nip.io
+      pathType: ImplementationSpecific
+  # ingress TLS config
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+# custom job to load cohort definitions into the WebAPI
+loadCohortDefinitionsJob:
+  # whether to enable a job for loading custom cohort definitions in JSON format <br>
+  # WARNING: the job doesn't load the cohort definitions idempotently, so it is likely for definitions to appear multiple times
+  # if the job is run multiple times
+  enabled: false
+
+  # restartPolicy of the job <https://kubernetes.io/docs/concepts/workloads/controllers/job/#handling-pod-and-container-failures>
+  restartPolicy: Never
+
+  # the number of retries before considering the Job as failed
+  backoffLimit: 1
+
+  # clean up Job and dependent objects after job completion <https://kubernetes.io/docs/concepts/workloads/controllers/job/#ttl-mechanism-for-finished-jobs>
+  ttlSecondsAfterFinished: 120
+
+  # annotations set on the job's pod
+  podAnnotations: {}
+
+  # PodSecurityContext for the job's pod
+  podSecurityContext:
+    {}
+    # fsGroup: 2000
+
+  # extra environment variables to set
+  extraEnv:
+    []
+    # - name: "TEST"
+    #   value: "TEST"
+
+  # set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "micro"
+
+  # configure the resource requests and limits
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+  # the cohort defintions to send to the WebAPI as a list of JSON objects.
+  # See the [ci/kitchen-sink-test-values.yaml](ci/kitchen-sink-test-values.yaml) file for an example of the expected format.
+  cohortDefinitions: []
+
+# @ignored
+curl: # +doc-gen:ignore
+  image:
+    registry: docker.io
+    repository: curlimages/curl
+    tag: 8.9.1@sha256:8addc281f0ea517409209f76832b6ddc2cabc3264feb1ebbec2a2521ffad24e4
+
+tests:
+  automountServiceAccountToken: false
+  # set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "nano"
+  # configure the test pods resource requests and limits
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+initContainers:
+  # set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "micro"
+  # configure the init containers pods resource requests and limits
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi

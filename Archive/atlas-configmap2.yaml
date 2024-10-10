@@ -1,0 +1,34 @@
+apiVersion: v1
+data:
+  default.js: |
+    user nobody; # a directive in the 'main' context
+    events {
+     # configuration of connection processing
+     }
+     http {
+     # Configuration specific to HTTP and affecting all virtual servers
+     server {
+     # configuration of HTTP virtual server 1
+     location / {
+     proxy_pass http://10.96.23.8:8080/WebAPI/;
+     }
+     location /two {
+     # configuration for processing URIs starting with '/two'
+     }
+     }
+     server {
+     # configuration of HTTP virtual server 2
+     }
+     }
+     stream {
+     # Configuration specific to TCP/UDP and affecting all virtual servers
+     server {
+     # configuration of TCP virtual server 1
+     }
+     }
+
+
+kind: ConfigMap
+metadata:
+  name: atlas-configmap2
+  namespace: ohdsi

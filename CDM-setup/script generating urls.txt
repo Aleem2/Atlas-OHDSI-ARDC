@@ -1,0 +1,19 @@
+Results schema tables
+The following WebAPI URL is used to generate the SQL script that you will need to create and set up your results schema tables:
+
+You will need to modify the URL above to point your instance of WebAPI running on <server:port> (default in this guide is localhost:8080) and then substitute the values specific to your CDM setup:
+
+<your_cdm_database_dialect>: This is one of the following: oracle, postgresql, pdw, redshift, impala, netezza, bigquery, or sql server and is based on the platform you use to host your CDM.
+<your_results_schema>: The schema containing your results tables
+<your_vocab_schema>: The schema containing your vocabulary tables
+<your_temp_schema>: The schema that it utilized for your temporary schema
+The initConceptHierarchy value in the URL is set to true and is used to establish the concept_hierarchy which is a cached version of the OMOP vocabulary specific to the concepts found in your CDM. This table can take a while to build and only needs to be established one time. This value can be set to false if you do not need to re-establish this table.
+Once you have created the URL for your environment, open a browser and navigate to that URL. The resulting SQL will be displayed in the browser and your database administrator can use this script to establish the results schema.
+
+Concept count tables
+The following script is required as of v2.13 of WebAPI to create the concept count tables in your CDM. This script assumes you have run Achilles and it will use those tables to create the concept count table that is used to power the vocabulary search:
+
+http://203.101.238.248.nip.io/WebAPI/ddl/achilles?dialect=postgresql&schema=results&vocabSchema=vocabulary
+<your_cdm_database_dialect>: This is one of the following: oracle, postgresql, pdw, redshift, impala, netezza, bigquery, or sql server and is based on the platform you use to host your CDM.
+<your_results_schema>: The schema containing your results tables
+<your_vocab_schema>: The schema containing your vocabulary tables
