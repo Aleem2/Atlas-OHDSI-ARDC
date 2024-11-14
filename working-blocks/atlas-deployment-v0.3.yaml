@@ -24,8 +24,6 @@ spec:
       - image: ohdsi/atlas:2.13.0
         name: atlas
         env:
-        - name: WEBAPI_URL
-          value: https://immune-crayfish-expert.ngrok-free.app/WebAPI/
         - name: CONFIG_PATH
           value: /usr/share/nginx/html/atlas/js/config-local.js
         
