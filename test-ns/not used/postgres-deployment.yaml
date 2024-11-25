@@ -19,6 +19,7 @@ spec:
         image: postgres:15.9-bullseye
         ports:
         - containerPort: 5432
+        #command: ["sh", "-c", "psql -U postgres -f //docker-entrypoint-initdb.d/init.sql"]
         env:
         - name: POSTGRES_PASSWORD
           valueFrom:

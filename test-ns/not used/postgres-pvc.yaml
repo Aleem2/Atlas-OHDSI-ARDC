@@ -1,0 +1,12 @@
+# postgres stores data in /var/lib/postgresql/data. Hence mounting this directory on external persistent volume makes does the deal. 
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pv-claim
+  namespace: ohdsi-test
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi

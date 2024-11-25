@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgres
-  namespace: ohdsi-test
+  namespace: ohdsi
 spec:
   replicas: 1
   selector:
@@ -41,20 +41,12 @@ spec:
               name: atlas-secrets
               key: webapi-sa
         - name: PGDATA
-          value: /data/postgres-data  
+          value: /data  
         volumeMounts:
         - name: init-script
           mountPath: /docker-entrypoint-initdb.d
         - name: persistence
           mountPath: /data
-          subPath: postgres-data
-      initContainers:
-        - name: create-folder
-          image: busybox
-          command: ["sh", "-c", "mkdir -p /data/postgres-data"]
-          volumeMounts:
-            - name: persistence
-              mountPath: /data
 
       volumes:
       - name: init-script
