@@ -8,7 +8,7 @@ Note: This deployment assumes someone with basic knowledge of kubernetes is depl
 
 The architecture is derived from the [Atlas architecture](https://github.com/OHDSI/WebAPI/wiki) with some terminologies relevant to Kubernetes implementation. Figure 1 shows the  architecture diagram and it serves as reference for K8s implementation.
 
-\!\[image info\](working-blocks/Atlas-Deployment.png)
+![image info](working-blocks/Atlas-Deployment.png)
 
 Figure 1: ATLAS Architecture
 
