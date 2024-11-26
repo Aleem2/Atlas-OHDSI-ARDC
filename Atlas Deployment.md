@@ -6,6 +6,7 @@ The document outlines the architecture and the deployment instructions for OHDSI
 
 The architecture is derived from the [Atlas architecture](https://github.com/OHDSI/WebAPI/wiki) with some terminologies relevant to Kubernetes. Figure 1 shows the  architecture diagram and it serves as reference for K8s implementation.
 
+![image info](working-blocks/Atlas-Deployment.png)
 Figure 1: ATLAS Architecture
 
 # 
