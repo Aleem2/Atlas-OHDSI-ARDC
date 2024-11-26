@@ -2,7 +2,7 @@
 
 The document outlines the architecture and the containerised deployment instructions for OHDSIs tool called [ATLAS](https://www.ohdsi.org/software-tools/). To make this deployment ready for demonstration it includes a sample CDM database from Broadsea. This implementation builds on existing containers of various components including [ATLAS](https://hub.docker.com/r/ohdsi/atlas), [WebAPI](https://hub.docker.com/r/ohdsi/webapi), [Postgres DB](https://hub.docker.com/_/postgres) and [a sample Broadsea CDM](https://hub.docker.com/r/ohdsi/broadsea-atlasdb). Finally for practicality of implementation the implementation outlines a method of adding a real world CDM using a Kubernetes job. 
 
-Note: This deployment assumes someone with basic knowledge of kubernetes is deploying it. Some helpful [Kuberenetes reference](https://kubernetes.io/docs/home/). 
+Note: This document assumes someone with basic knowledge of kubernetes is deploying it. Some helpful [Kuberenetes reference](https://kubernetes.io/docs/home/). 
 
 # Architecture
 
