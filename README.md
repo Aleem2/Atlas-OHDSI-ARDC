@@ -14,7 +14,7 @@ Figure 1: ATLAS Architecture
 
 # Kubernetes cluster dimensioning
 
-To deploy this implementation a kubernetes cluster is needed. The suggested dimensions of the cluster are that it contains a minimum 2 medium sized worker nodes (e.g. 2x 4 VCPUs and 8G RAM) and a minimum of 5GB persistent storage volume for application database. While the CDM database requirements are not outlined here. Additionally, if deployed in a cloud environment a load balancer and an ingress with domain name is recommended with HTTPS setup. 
+To deploy this implementation a kubernetes cluster is needed. The suggested dimensions of the cluster are that it contains a minimum 2 medium sized worker nodes (e.g. 2x 4 VCPUs and 8G RAM) and a minimum of 5GB persistent storage volume for application database. While the CDM database requirements are not outlined here. Additionally, if deployed in a cloud environment a load balancer and an ingress with domain name is recommended with HTTPS setup.
 
 # Sequence of deployment
 
