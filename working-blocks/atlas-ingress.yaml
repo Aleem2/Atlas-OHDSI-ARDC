@@ -4,9 +4,9 @@ metadata:
   name: atlas
   namespace: ohdsi
 spec:
-  ingressClassName: ngrok
+  ingressClassName: nginx
   rules:
-  - host: immune-crayfish-expert.ngrok-free.app
+  - host: 203.101.238.248.nip.io
     http:
       paths:
       - path: /WebAPI

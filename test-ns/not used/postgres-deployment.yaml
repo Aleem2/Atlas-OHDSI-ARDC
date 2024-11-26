@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgres
-  namespace: ohdsi
+  namespace: ohdsi-test
 spec:
   replicas: 1
   selector:
@@ -17,9 +17,9 @@ spec:
       containers:
       - name: postgres
         image: postgres:15.9-bullseye
-        #command: ["sh", "-c", "psql -U postgres -f /docker-entrypoint-initdb.d/init.sql"] 
         ports:
         - containerPort: 5432
+        #command: ["sh", "-c", "psql -U postgres -f //docker-entrypoint-initdb.d/init.sql"]
         env:
         - name: POSTGRES_PASSWORD
           valueFrom:

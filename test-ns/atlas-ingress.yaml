@@ -1,11 +1,12 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: atlas
-  namespace: ohdsi
+  name: atlas1
+  namespace: ohdsi-test
 spec:
+  ingressClassName: nginx
   rules:
-  - host: 203.101.238.240.nip.io
+  - host: 203.101.238.248.nip.io
     http:
       paths:
       - path: /WebAPI

@@ -7,7 +7,7 @@ metadata:
   labels:
     app: atlas
   name: atlas
-  namespace: ohdsi
+  namespace: ohdsi-test
 spec:
   replicas: 1
   selector:
