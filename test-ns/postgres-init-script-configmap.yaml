@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: postgresql-init-script
-  namespace: ohdsi-test
+  namespace: ohdsi
 data:
   init.sql: |
     -- Instructions are linked here. https://github.com/OHDSI/WebAPI/wiki/PostgreSQL-Installation-Guide
@@ -27,9 +27,11 @@ data:
     GRANT ohdsi_admin TO ohdsi_admin_user;
     COMMENT ON ROLE ohdsi_admin_user
       IS 'Admin user account for OHDSI applications';
-    \set ohdsi_admin_user `echo $ohdsi_admin_user`;
-    ALTER ROLE ohdsi_admin_user WITH PASSWORD 'admin1'; 
     
+    \set ohdsi_admin_user `echo "$ohdsi_admin_user"`
+    ALTER ROLE ohdsi_admin_user WITH PASSWORD :'ohdsi_admin_user';
+    --ALTER ROLE ohdsi_admin_user WITH PASSWORD 'admin1'; 
+    -- to use env variable as a password use '$ENV{MY_PASSWORD}';
 
 
     --
@@ -38,9 +40,10 @@ data:
     GRANT ohdsi_app TO ohdsi_app_user;
     COMMENT ON ROLE ohdsi_app_user
       IS 'Application user account for OHDSI applications';
-    \set ohdsi_admin_user `echo $ohdsi_admin_user`;
-    ALTER ROLE ohdsi_app_user WITH PASSWORD 'app1'; 
-
+    \set ohdsi_app_user `echo "$ohdsi_app_user"`
+    ALTER ROLE ohdsi_app_user WITH PASSWORD :'ohdsi_app_user';  
+    --ALTER ROLE ohdsi_app_user WITH PASSWORD 'app1'; 
+     -- to use env variable as a password use '$ENV{MY_PASSWORD}';
 
     --Creating the OHDSI WebAPI database
     CREATE DATABASE "ohdsi"
@@ -87,6 +90,3 @@ data:
         last_name   character varying(255),
         email       character varying(255)
       );
-
-
-
