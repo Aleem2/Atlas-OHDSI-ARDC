@@ -18,7 +18,7 @@ To deploy this implementation a kubernetes cluster is needed. The suggested dime
 
 # Sequence of deployment
 
-This deployment is a collection of yaml files which translates the deployment instructions into infrastructure as code yaml files. The relevant Atlas files are in the working-blocks directory on the [Github repository](https://github.com/Aleem2/Atlas-OHDSI-ARDC/tree/clean-up). The instructions are meant to be followed sequentially. 
+This deployment is a collection of yaml files which translates the deployment instructions into infrastructure as code yaml files. The relevant Atlas files are in the working-blocks directory on the [Github repository](https://github.com/Aleem2/Atlas-OHDSI-ARDC/tree/main). The instructions are meant to be followed sequentially. 
 
 * Create a namespace using the following command.  
   * kubectl create \-f ns-ohdsi.yaml  
