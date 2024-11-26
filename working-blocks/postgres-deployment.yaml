@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgres
-  namespace: ohdsi-test
+  namespace: ohdsi
 spec:
   replicas: 1
   selector:

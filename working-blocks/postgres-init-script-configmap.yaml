@@ -27,7 +27,7 @@ data:
     GRANT ohdsi_admin TO ohdsi_admin_user;
     COMMENT ON ROLE ohdsi_admin_user
       IS 'Admin user account for OHDSI applications';
-    ALTER ROLE ohdsi_admin_user WITH PASSWORD '$ENV{ohdsi_admin_user}'; 
+    ALTER ROLE ohdsi_admin_user WITH PASSWORD 'admin1'; 
     -- to use env variable as a password use '$ENV{MY_PASSWORD}';
 
 
@@ -37,7 +37,7 @@ data:
     GRANT ohdsi_app TO ohdsi_app_user;
     COMMENT ON ROLE ohdsi_app_user
       IS 'Application user account for OHDSI applications';
-    ALTER ROLE ohdsi_app_user WITH PASSWORD '$ENV{ohdsi_app_user}'; 
+    ALTER ROLE ohdsi_app_user WITH PASSWORD 'app1'; 
      -- to use env variable as a password use '$ENV{MY_PASSWORD}';
 
     --Creating the OHDSI WebAPI database

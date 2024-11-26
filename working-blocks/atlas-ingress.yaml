@@ -4,8 +4,9 @@ metadata:
   name: atlas
   namespace: ohdsi
 spec:
+  ingressClassName: nginx
   rules:
-  - host: 203.101.238.240.nip.io
+  - host: 203.101.238.248.nip.io
     http:
       paths:
       - path: /WebAPI
