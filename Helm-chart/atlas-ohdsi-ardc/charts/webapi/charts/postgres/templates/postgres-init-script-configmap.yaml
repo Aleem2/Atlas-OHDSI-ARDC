@@ -1,0 +1,91 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgresql-init-script
+data:
+  init.sql: |
+    -- Instructions are linked here. https://github.com/OHDSI/WebAPI/wiki/PostgreSQL-Installation-Guide
+    -- container related instructions https://hub.docker.com/_/postgres
+
+    --Creating Database Group Roles
+    --Group: ohdsi_admin
+    CREATE ROLE ohdsi_admin
+      CREATEDB REPLICATION
+      VALID UNTIL 'infinity';
+    COMMENT ON ROLE ohdsi_admin
+      IS 'Administration group for OHDSI applications';
+
+    --Group: ohdsi_app
+    CREATE ROLE ohdsi_app
+      VALID UNTIL 'infinity';
+    COMMENT ON ROLE ohdsi_app
+      IS 'Application group for OHDSI applications';
+    --Creating Database Login Roles
+    CREATE ROLE ohdsi_admin_user LOGIN ENCRYPTED PASSWORD 'md58d34c863380040dd6e1795bd088ff4a9'
+      VALID UNTIL 'infinity';
+    GRANT ohdsi_admin TO ohdsi_admin_user;
+    COMMENT ON ROLE ohdsi_admin_user
+      IS 'Admin user account for OHDSI applications';
+    
+    \set ohdsi_admin_user `echo "$ohdsi_admin_user"`
+    ALTER ROLE ohdsi_admin_user WITH PASSWORD :'ohdsi_admin_user';
+    --ALTER ROLE ohdsi_admin_user WITH PASSWORD 'admin1'; 
+    -- to use env variable as a password use '$ENV{MY_PASSWORD}';
+
+
+    --
+    CREATE ROLE ohdsi_app_user LOGIN ENCRYPTED PASSWORD 'md55cc9d81d14edce93a4630b7c885c6410'
+      VALID UNTIL 'infinity';
+    GRANT ohdsi_app TO ohdsi_app_user;
+    COMMENT ON ROLE ohdsi_app_user
+      IS 'Application user account for OHDSI applications';
+    \set ohdsi_app_user `echo "$ohdsi_app_user"`
+    ALTER ROLE ohdsi_app_user WITH PASSWORD :'ohdsi_app_user';  
+    --ALTER ROLE ohdsi_app_user WITH PASSWORD 'app1'; 
+     -- to use env variable as a password use '$ENV{MY_PASSWORD}';
+
+    --Creating the OHDSI WebAPI database
+    CREATE DATABASE "ohdsi"
+      WITH ENCODING='UTF8'
+          OWNER=ohdsi_admin
+          CONNECTION LIMIT=-1;
+    COMMENT ON DATABASE "ohdsi"
+      IS 'ohdsi database';
+    GRANT ALL ON DATABASE "ohdsi" TO GROUP ohdsi_admin;
+    GRANT CONNECT, TEMPORARY ON DATABASE "ohdsi" TO GROUP ohdsi_app;
+
+    --Prepare Database Schema for WebAPI
+    CREATE SCHEMA webapi
+          AUTHORIZATION ohdsi_admin;
+    COMMENT ON SCHEMA webapi
+      IS 'Schema containing tables to support WebAPI functionality';
+    GRANT USAGE ON SCHEMA webapi TO PUBLIC;
+    GRANT ALL ON SCHEMA webapi TO GROUP ohdsi_admin;
+    GRANT USAGE ON SCHEMA webapi TO GROUP ohdsi_app;
+
+    --Tab: Default Privileges
+    ALTER DEFAULT PRIVILEGES IN SCHEMA webapi
+        GRANT INSERT, SELECT, UPDATE, DELETE, REFERENCES, TRIGGER ON TABLES
+        TO ohdsi_app;
+
+    ALTER DEFAULT PRIVILEGES IN SCHEMA webapi
+        GRANT SELECT, USAGE ON SEQUENCES
+        TO ohdsi_app;
+
+    ALTER DEFAULT PRIVILEGES IN SCHEMA webapi
+        GRANT EXECUTE ON FUNCTIONS
+        TO ohdsi_app;
+
+    ALTER DEFAULT PRIVILEGES IN SCHEMA webapi
+        GRANT USAGE ON TYPES
+        TO ohdsi_app;
+
+    CREATE TABLE IF NOT EXISTS webapi.basic_security_users
+      (
+        username    character varying(255),
+        password    character varying(255),
+        first_name  character varying(255),
+        middle_name character varying(255),
+        last_name   character varying(255),
+        email       character varying(255)
+      );

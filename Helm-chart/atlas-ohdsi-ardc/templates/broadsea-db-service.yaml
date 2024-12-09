@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: broadsea-db
+  name: broadsea-db
+spec:
+  ports:
+  - port: 5432
+    protocol: TCP
+    targetPort: 5432
+  selector:
+    app: broadsea-db
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

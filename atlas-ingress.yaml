@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: atlas
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: 203.101.238.248.nip.io
+    http:
+      paths:
+      - path: /WebAPI
+        pathType: Prefix
+        backend:
+          service:
+            name: webapi
+            port:
+              number: 8080
+      - path: /atlas
+        pathType: Prefix
+        backend:
+          service:
+            name: atlas
+            port:
+              number: 8080
+
+

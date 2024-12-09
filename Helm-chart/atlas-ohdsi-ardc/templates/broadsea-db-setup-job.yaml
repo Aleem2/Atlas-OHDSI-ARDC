@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cdm-setup-script
+data:
+  cdm-setup-script.sql: |
+    -----------------------------
+    --------------------------------
+
+    -- Adding CMD to application DB -- linked https://github.com/OHDSI/WebAPI/wiki/CDM-Configuration. The last part specifically. 
+    -------------------------------
+    ------------------------------
+    \connect ohdsi
+    INSERT INTO webapi.source (source_id, source_name, source_key, source_connection, source_dialect, is_cache_enabled) 
+    SELECT nextval('webapi.source_sequence') , 'CDM-sample', 'CDM-sample', 'jdbc:postgresql://broadsea-db:5432/postgres?user=postgres&password=mypass', 'postgresql', true;
+    --nextval('webapi.source_sequence') was replaced by 1
+    INSERT INTO webapi.source_daimon (source_daimon_id, source_id, daimon_type, table_qualifier, priority) 
+    SELECT nextval('webapi.source_daimon_sequence'), source_id, 0, 'demo_cdm', 0
+    FROM webapi.source
+    WHERE source_key = 'CDM-sample'
+    ;
+
+    INSERT INTO webapi.source_daimon (source_daimon_id, source_id, daimon_type, table_qualifier, priority) 
+    SELECT nextval('webapi.source_daimon_sequence'), source_id, 1, 'demo_cdm', 1
+    FROM webapi.source
+    WHERE source_key = 'CDM-sample'
+    ;
+
+    INSERT INTO webapi.source_daimon (source_daimon_id, source_id, daimon_type, table_qualifier, priority) 
+    SELECT nextval('webapi.source_daimon_sequence'), source_id, 2, 'demo_cdm_results', 1
+    FROM webapi.source
+    WHERE source_key = 'CDM-sample'
+    ;
+
+    INSERT INTO webapi.source_daimon (source_daimon_id, source_id, daimon_type, table_qualifier, priority) 
+    SELECT nextval('webapi.source_daimon_sequence'), source_id, 5, 'webapi', 0
+    FROM webapi.source
+    WHERE source_key = 'CDM-sample'
+    ;
+
+---
+
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  creationTimestamp: null
+  name: broadsea-db-setup
+spec:
+  template:
+    metadata:
+      creationTimestamp: null
+    spec:
+      containers:
+      - command:
+        - sh
+        - -c
+        - sleep 180; psql -h postgres -p 5432 -U postgres -d ohdsi -f /home/cdm-setup-script.sql
+        image: postgres:15.9-bullseye
+        name: broadsea-db-setup
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: atlas-secrets
+              key: postgres-password
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: atlas-secrets
+              key: postgres-password
+
+        volumeMounts:
+        - name: init-script
+          mountPath: /home/
+
+      volumes:
+      - name: init-script
+        configMap:
+          name: cdm-setup-script
+    
+      restartPolicy: Never
+status: {}
