@@ -74,7 +74,7 @@ This deployment is a collection of yaml files which translates the deployment in
   * Finally refresh the WebAPI to start serving the new CDM.  
   * kubectl \-n ohdsi rollout restart deploy/webapi
 
-Setting up a real world CDM (Optional)
+# Setting up a real world CDM (Optional)
 
 * Make sure the sql database is up and running.   
   * Update the cdm-setup-script-cm.yaml file with relevant details. Execute the following command to set up the CMD setup script as a configmap.   
