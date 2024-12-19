@@ -1,6 +1,6 @@
 # Atlas Deployment on Kubernetes
 
-The document outlines the architecture and the containerised deployment instructions for OHDSIs tool called [ATLAS](https://www.ohdsi.org/software-tools/). To make this deployment ready for demonstration it includes a sample CDM database from Broadsea. This implementation builds on existing containers of various components including [ATLAS](https://hub.docker.com/r/ohdsi/atlas), [WebAPI](https://hub.docker.com/r/ohdsi/webapi), [Postgres DB](https://hub.docker.com/_/postgres) and [a sample Broadsea CDM](https://hub.docker.com/r/ohdsi/broadsea-atlasdb). Finally for practicality of implementation the implementation outlines a method of adding a real world CDM using a Kubernetes job. 
+The document outlines the architecture and the containerised deployment instructions for OHDSIs tool called [ATLAS](https://www.ohdsi.org/software-tools/). To make this deployment ready for demonstration it includes a sample CDM database from Broadsea. This implementation builds on existing containers of various components including [ATLAS](https://hub.docker.com/r/ohdsi/atlas), [WebAPI](https://hub.docker.com/r/ohdsi/webapi), [Postgres DB](https://hub.docker.com/_/postgres) and [a sample Broadsea CDM](https://hub.docker.com/r/ohdsi/broadsea-atlasdb). Finally for practicality the implementation outlines a method of adding a real world CDM using a Kubernetes job. 
 
 Note: This document assumes someone with basic knowledge of kubernetes is deploying it. Some helpful [Kuberenetes reference](https://kubernetes.io/docs/home/). 
 
@@ -8,7 +8,7 @@ Note: This document assumes someone with basic knowledge of kubernetes is deploy
 
 The architecture is derived from the [Atlas architecture](https://github.com/OHDSI/WebAPI/wiki) with some terminologies relevant to Kubernetes implementation. Figure 1 shows the  architecture diagram and it serves as reference for K8s implementation.
 
-![image info](working-blocks/Atlas-Deployment.png)
+\!\[image info\](working-blocks/Atlas-Deployment.png)
 
 Figure 1: ATLAS Architecture
 
@@ -79,10 +79,10 @@ This deployment is a collection of yaml files which translates the deployment in
 # Setting up a real world CDM (Optional)
 
 * Make sure the sql database is up and running.   
-  * Update the cdm-setup-script-cm.yaml file with relevant details. Execute the following command to set up the CMD setup script as a configmap.   
-  * kubectl \-n ohdsi create \-f cdm-setup-script-cm.yaml  
-  * Execute the job to update the application DB with new CDM details.  
-  * kubectl \-n ohdsi create \-f realworld-cdm-setup-job.yaml  
+  * Update the “Adding new CDM/new-CDM-setup-job.yaml” file with relevant details. Execute the following command to set up the CMD setup script as a configmap.   
+  * kubectl \-n ohdsi create \-f new-CDM-setup-job.yaml  
   * Finally refresh the WebAPI to start serving the new CDM.  
   * kubectl \-n ohdsi rollout restart deploy/webapi
+
+  
 
