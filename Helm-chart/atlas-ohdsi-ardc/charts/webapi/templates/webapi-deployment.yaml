@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: webapi
+  name: webapi
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapi
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: webapi
+    spec:
+      containers:
+      - image: ohdsi/webapi:2.13.0
+        name: webapi
+        #command: ["sh"]
+        #args: ["-c", "while true; do echo 'Sidecar container running'; sleep 10; done"]
+        #================================
+
+        env:
+        - name: SECURITY_CORS_ENABLED
+          value: "false"
+        - name: DATASOURCE_DRIVERCLASSNAME
+          value: org.postgresql.Driver
+        - name: DATASOURCE_URL
+          value: jdbc:postgresql://postgres:5432/ohdsi?ApplicationName=webapi
+        - name: DATASOURCE_USERNAME
+          value: ohdsi_admin_user
+        - name: DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: atlas-secrets
+              key: ohdsi-admin-user
+        - name: DATASOURCE_OHDSI_SCHEMA
+          value: webapi
+        - name: SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA
+          value: webapi
+        - name: SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
+          value: org.hibernate.dialect.PostgreSQLDialect
+        - name: SPRING_BATCH_REPOSITORY_TABLEPREFIX
+          value: webapi.BATCH_
+        - name: FLYWAY_DATASOURCE_DRIVERCLASSNAME
+          value: org.postgresql.Driver
+        - name: FLYWAY_SCHEMAS
+          value: webapi
+        - name: FLYWAY_PLACEHOLDERS_OHDSISCHEMA
+          value: webapi
+        - name: FLYWAY_DATASOURCE_URL
+          value: jdbc:postgresql://postgres:5432/ohdsi?ApplicationName=webapi
+        - name: FLYWAY_DATASOURCE_USERNAME
+          value: ohdsi_admin_user
+        - name: FLYWAY_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: atlas-secrets
+              key: ohdsi-admin-user
+        - name: JAVA_OPTS
+          value: -XX:MinRAMPercentage=60.0 -XX:MaxRAMPercentage=80.0
+      initContainers:
+      - args:
+        - |
+          until pg_isready; do
+            echo "Waiting for DB ${PGUSER}@${PGHOST}:${PGPORT} to be up";
+            sleep 15;
+          done;
+        command:
+        - /bin/sh
+        - -c
+        env:
+        - name: PGHOST
+          value: postgres
+        - name: PGPORT
+          value: "5432"
+        - name: PGUSER
+          value: ohdsi_admin_user
+        image: postgres:12.20-alpine3.20
+        imagePullPolicy: IfNotPresent
+        name: wait-for-db
+      #volumes:
+      #- name: webapi-config-file
+      #  configMap:
+      #    name: webapi-configmap
+        
+status: {}

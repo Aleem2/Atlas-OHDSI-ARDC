@@ -1,0 +1,65 @@
+# making pg data persistent https://stackoverflow.com/questions/75223014/postgresql-data-on-k8s-cannot-be-made-persistent
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15.9-bullseye
+        #command: ["sh", "-c", "psql -U postgres -f /docker-entrypoint-initdb.d/init.sql"] 
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: atlas-secrets
+              key: postgres-password
+        - name: ohdsi_admin_user
+          valueFrom:
+            secretKeyRef:
+              name: atlas-secrets
+              key: ohdsi-admin-user
+        - name: ohdsi_app_user
+          valueFrom:
+            secretKeyRef:
+              name: atlas-secrets
+              key: ohdsi-app-user
+        - name: webapi_sa
+          valueFrom:
+            secretKeyRef:
+              name: atlas-secrets
+              key: webapi-sa
+        - name: PGDATA
+          value: /data/postgres-data  
+        volumeMounts:
+        - name: init-script
+          mountPath: /docker-entrypoint-initdb.d
+        - name: persistence
+          mountPath: /data
+          subPath: postgres-data
+      initContainers:
+        - name: create-folder
+          image: busybox
+          command: ["sh", "-c", "mkdir -p /data/postgres-data"]
+          volumeMounts:
+            - name: persistence
+              mountPath: /data
+
+      volumes:
+      - name: init-script
+        configMap:
+          name: postgresql-init-script
+      - name: persistence
+        persistentVolumeClaim:
+          claimName: postgres-pv-claim  

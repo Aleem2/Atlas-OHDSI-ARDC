@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  creationTimestamp: null
+  name: broadsea-db-setup
+spec:
+  template:
+    metadata:
+      creationTimestamp: null
+    spec:
+      containers:
+      - command:
+        - sh
+        - -c
+        - psql -h postgres -p 5432 -U postgres -d ohdsi -f /home/cdm-setup-script.sql
+        image: postgres:15.9-bullseye
+        name: broadsea-db-setup
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: atlas-secrets
+              key: postgres-password
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: atlas-secrets
+              key: postgres-password
+
+        volumeMounts:
+        - name: init-script
+          mountPath: /home/
+
+      volumes:
+      - name: init-script
+        configMap:
+          name: cdm-setup-script
+    
+      restartPolicy: Never
+status: {}
