@@ -56,7 +56,7 @@ spec:
       - command:
         - sh
         - -c
-        - sleep 240; psql -h postgres -p 5432 -U postgres -d ohdsi -f /home/cdm-setup-script.sql
+        - sleep 120; psql -h postgres -p 5432 -U postgres -d ohdsi -f /home/cdm-setup-script.sql
         image: postgres:15.9-bullseye
         name: broadsea-db-setup
         env:

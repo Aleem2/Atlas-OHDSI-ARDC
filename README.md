@@ -39,7 +39,8 @@ Helm chart is the preferred way of deployment as it simplifies the deployment. T
     *  kubectl \-n demo1 edit ingress atlas  
   * Update the atlas config file with host details (203.101.238.248.nip.io) using the following command.  
     * kubectl \-n demo1 edit configmap/atlas-configmap  
-    * kubectl \-n demo1 rollout restart deployment.apps/atlas
+    * kubectl \-n demo1 rollout restart deployment.apps/atlas 
+* **The application can be accessed on [https://203.101.238.248.nip.io/atlas](https://203.101.238.248.nip.io/atlas)**
 
 # Deploying Kubernetes Yamls (if you prefer not to use Helm chart)
 
@@ -84,6 +85,7 @@ This deployment is a collection of yaml files which translates the deployment in
   * Finally refresh the WebAPI to start serving the new CDM.  
   * kubectl \-n ohdsi rollout restart deploy/webapi
   
+
 
   
 
