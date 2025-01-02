@@ -83,6 +83,7 @@ This deployment is a collection of yaml files which translates the deployment in
   * kubectl \-n ohdsi create \-f new-CDM-setup-job.yaml  
   * Finally refresh the WebAPI to start serving the new CDM.  
   * kubectl \-n ohdsi rollout restart deploy/webapi
+  
 
   
 
