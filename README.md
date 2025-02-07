@@ -40,7 +40,7 @@ Helm chart is the preferred way of deployment as it simplifies the deployment. T
   * Update the atlas config file with host details (203.101.238.248.nip.io) using the following command.  
     * kubectl \-n demo1 edit configmap/atlas-configmap  
     * kubectl \-n demo1 rollout restart deployment.apps/atlas 
-* **The application can be accessed on [https://203.101.238.248.nip.io/atlas](https://203.101.238.248.nip.io/atlas)**
+* **The application can be accessed on [http://203.101.238.248.nip.io/atlas](http://203.101.238.248.nip.io/atlas)**
 
 # Deploying Kubernetes Yamls (if you prefer not to use Helm chart)
 
