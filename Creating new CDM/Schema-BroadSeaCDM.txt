@@ -1,0 +1,322 @@
+                              List of relations
+       Schema       |             Name              |    Type     |  Owner
+--------------------+-------------------------------+-------------+----------
+ demo_cdm           | attribute_definition          | table       | postgres
+ demo_cdm           | care_site                     | table       | postgres
+ demo_cdm           | cdm_source                    | table       | postgres
+ demo_cdm           | cohort_definition             | table       | postgres
+ demo_cdm           | concept                       | table       | postgres
+ demo_cdm           | concept_ancestor              | table       | postgres
+ demo_cdm           | concept_class                 | table       | postgres
+ demo_cdm           | concept_recommended           | table       | postgres
+ demo_cdm           | concept_relationship          | table       | postgres
+ demo_cdm           | concept_synonym               | table       | postgres
+ demo_cdm           | condition_era                 | table       | postgres
+ demo_cdm           | condition_occurrence          | table       | postgres
+ demo_cdm           | cost                          | table       | postgres
+ demo_cdm           | death                         | table       | postgres
+ demo_cdm           | device_exposure               | table       | postgres
+ demo_cdm           | domain                        | table       | postgres
+ demo_cdm           | dose_era                      | table       | postgres
+ demo_cdm           | drug_era                      | table       | postgres
+ demo_cdm           | drug_exposure                 | table       | postgres
+ demo_cdm           | drug_strength                 | table       | postgres
+ demo_cdm           | fact_relationship             | table       | postgres
+ demo_cdm           | location                      | table       | postgres
+ demo_cdm           | measurement                   | table       | postgres
+ demo_cdm           | metadata                      | table       | postgres
+ demo_cdm           | note                          | table       | postgres
+ demo_cdm           | note_nlp                      | table       | postgres
+ demo_cdm           | observation                   | table       | postgres
+ demo_cdm           | observation_period            | table       | postgres
+ demo_cdm           | payer_plan_period             | table       | postgres
+ demo_cdm           | person                        | table       | postgres
+ demo_cdm           | procedure_occurrence          | table       | postgres
+ demo_cdm           | provider                      | table       | postgres
+ demo_cdm           | relationship                  | table       | postgres
+ demo_cdm           | source_to_concept_map         | table       | postgres
+ demo_cdm           | specimen                      | table       | postgres
+ demo_cdm           | visit_detail                  | table       | postgres
+ demo_cdm           | visit_occurrence              | table       | postgres
+ demo_cdm           | vocabulary                    | table       | postgres
+ demo_cdm_results   | achilles_analysis             | table       | postgres
+ demo_cdm_results   | achilles_heel_results         | table       | postgres
+ demo_cdm_results   | achilles_result_concept_count | table       | postgres
+ demo_cdm_results   | achilles_results              | table       | postgres
+ demo_cdm_results   | achilles_results_derived      | table       | postgres
+ demo_cdm_results   | achilles_results_dist         | table       | postgres
+ demo_cdm_results   | cc_results                    | table       | postgres
+ demo_cdm_results   | cohort                        | table       | postgres
+ demo_cdm_results   | cohort_cache                  | table       | postgres
+ demo_cdm_results   | cohort_censor_stats           | table       | postgres
+ demo_cdm_results   | cohort_censor_stats_cache     | table       | postgres
+ demo_cdm_results   | cohort_inclusion              | table       | postgres
+ demo_cdm_results   | cohort_inclusion_result       | table       | postgres
+ demo_cdm_results   | cohort_inclusion_result_cache | table       | postgres
+ demo_cdm_results   | cohort_inclusion_stats        | table       | postgres
+ demo_cdm_results   | cohort_inclusion_stats_cache  | table       | postgres
+ demo_cdm_results   | cohort_sample_element         | table       | postgres
+ demo_cdm_results   | cohort_summary_stats          | table       | postgres
+ demo_cdm_results   | cohort_summary_stats_cache    | table       | postgres
+ demo_cdm_results   | concept_hierarchy             | table       | postgres
+ demo_cdm_results   | feas_study_inclusion_stats    | table       | postgres
+ demo_cdm_results   | feas_study_index_stats        | table       | postgres
+ demo_cdm_results   | feas_study_result             | table       | postgres
+ demo_cdm_results   | heracles_analysis             | table       | postgres
+ demo_cdm_results   | heracles_heel_results         | table       | postgres
+ demo_cdm_results   | heracles_periods              | table       | postgres
+ demo_cdm_results   | heracles_results              | table       | postgres
+ demo_cdm_results   | heracles_results_dist         | table       | postgres
+ demo_cdm_results   | ir_analysis_dist              | table       | postgres
+ demo_cdm_results   | ir_analysis_result            | table       | postgres
+ demo_cdm_results   | ir_analysis_strata_stats      | table       | postgres
+ demo_cdm_results   | ir_strata                     | table       | postgres
+ demo_cdm_results   | pathway_analysis_codes        | table       | postgres
+ demo_cdm_results   | pathway_analysis_events       | table       | postgres
+ demo_cdm_results   | pathway_analysis_paths        | table       | postgres
+ demo_cdm_results   | pathway_analysis_stats        | table       | postgres
+ information_schema | sql_features                  | table       | postgres
+ information_schema | sql_implementation_info       | table       | postgres
+ information_schema | sql_parts                     | table       | postgres
+ information_schema | sql_sizing                    | table       | postgres
+ pg_catalog         | pg_aggregate                  | table       | postgres
+ pg_catalog         | pg_am                         | table       | postgres
+ pg_catalog         | pg_amop                       | table       | postgres
+ pg_catalog         | pg_amproc                     | table       | postgres
+ pg_catalog         | pg_attrdef                    | table       | postgres
+ pg_catalog         | pg_attribute                  | table       | postgres
+ pg_catalog         | pg_auth_members               | table       | postgres
+ pg_catalog         | pg_authid                     | table       | postgres
+ pg_catalog         | pg_cast                       | table       | postgres
+ pg_catalog         | pg_class                      | table       | postgres
+ pg_catalog         | pg_collation                  | table       | postgres
+ pg_catalog         | pg_constraint                 | table       | postgres
+ pg_catalog         | pg_conversion                 | table       | postgres
+ pg_catalog         | pg_database                   | table       | postgres
+ pg_catalog         | pg_db_role_setting            | table       | postgres
+ pg_catalog         | pg_default_acl                | table       | postgres
+ pg_catalog         | pg_depend                     | table       | postgres
+ pg_catalog         | pg_description                | table       | postgres
+ pg_catalog         | pg_enum                       | table       | postgres
+ pg_catalog         | pg_event_trigger              | table       | postgres
+ pg_catalog         | pg_extension                  | table       | postgres
+ pg_catalog         | pg_foreign_data_wrapper       | table       | postgres
+ pg_catalog         | pg_foreign_server             | table       | postgres
+ pg_catalog         | pg_foreign_table              | table       | postgres
+ pg_catalog         | pg_index                      | table       | postgres
+ pg_catalog         | pg_inherits                   | table       | postgres
+ pg_catalog         | pg_init_privs                 | table       | postgres
+ pg_catalog         | pg_language                   | table       | postgres
+ pg_catalog         | pg_largeobject                | table       | postgres
+ pg_catalog         | pg_largeobject_metadata       | table       | postgres
+ pg_catalog         | pg_namespace                  | table       | postgres
+ pg_catalog         | pg_opclass                    | table       | postgres
+ pg_catalog         | pg_operator                   | table       | postgres
+ pg_catalog         | pg_opfamily                   | table       | postgres
+ pg_catalog         | pg_parameter_acl              | table       | postgres
+ pg_catalog         | pg_partitioned_table          | table       | postgres
+ pg_catalog         | pg_policy                     | table       | postgres
+ pg_catalog         | pg_proc                       | table       | postgres
+ pg_catalog         | pg_publication                | table       | postgres
+ pg_catalog         | pg_publication_namespace      | table       | postgres
+ pg_catalog         | pg_publication_rel            | table       | postgres
+ pg_catalog         | pg_range                      | table       | postgres
+ pg_catalog         | pg_replication_origin         | table       | postgres
+ pg_catalog         | pg_rewrite                    | table       | postgres
+ pg_catalog         | pg_seclabel                   | table       | postgres
+ pg_catalog         | pg_sequence                   | table       | postgres
+ pg_catalog         | pg_shdepend                   | table       | postgres
+ pg_catalog         | pg_shdescription              | table       | postgres
+ pg_catalog         | pg_shseclabel                 | table       | postgres
+ pg_catalog         | pg_statistic                  | table       | postgres
+ pg_catalog         | pg_statistic_ext              | table       | postgres
+ pg_catalog         | pg_statistic_ext_data         | table       | postgres
+ pg_catalog         | pg_subscription               | table       | postgres
+ pg_catalog         | pg_subscription_rel           | table       | postgres
+ pg_catalog         | pg_tablespace                 | table       | postgres
+ pg_catalog         | pg_transform                  | table       | postgres
+ pg_catalog         | pg_trigger                    | table       | postgres
+ pg_catalog         | pg_ts_config                  | table       | postgres
+ pg_catalog         | pg_ts_config_map              | table       | postgres
+ pg_catalog         | pg_ts_dict                    | table       | postgres
+ pg_catalog         | pg_ts_parser                  | table       | postgres
+ pg_catalog         | pg_ts_template                | table       | postgres
+ pg_catalog         | pg_type                       | table       | postgres
+ pg_catalog         | pg_user_mapping               | table       | postgres
+ pg_toast           | pg_toast_1213                 | TOAST table | postgres
+ pg_toast           | pg_toast_1247                 | TOAST table | postgres
+ pg_toast           | pg_toast_1255                 | TOAST table | postgres
+ pg_toast           | pg_toast_1260                 | TOAST table | postgres
+ pg_toast           | pg_toast_1262                 | TOAST table | postgres
+ pg_toast           | pg_toast_13439                | TOAST table | postgres
+ pg_toast           | pg_toast_13444                | TOAST table | postgres
+ pg_toast           | pg_toast_13449                | TOAST table | postgres
+ pg_toast           | pg_toast_13454                | TOAST table | postgres
+ pg_toast           | pg_toast_1417                 | TOAST table | postgres
+ pg_toast           | pg_toast_1418                 | TOAST table | postgres
+ pg_toast           | pg_toast_16401                | TOAST table | postgres
+ pg_toast           | pg_toast_16412                | TOAST table | postgres
+ pg_toast           | pg_toast_16417                | TOAST table | postgres
+ pg_toast           | pg_toast_16425                | TOAST table | postgres
+ pg_toast           | pg_toast_16430                | TOAST table | postgres
+ pg_toast           | pg_toast_16435                | TOAST table | postgres
+ pg_toast           | pg_toast_16455                | TOAST table | postgres
+ pg_toast           | pg_toast_16463                | TOAST table | postgres
+ pg_toast           | pg_toast_16471                | TOAST table | postgres
+ pg_toast           | pg_toast_16476                | TOAST table | postgres
+ pg_toast           | pg_toast_16484                | TOAST table | postgres
+ pg_toast           | pg_toast_16501                | TOAST table | postgres
+ pg_toast           | pg_toast_16512                | TOAST table | postgres
+ pg_toast           | pg_toast_16517                | TOAST table | postgres
+ pg_toast           | pg_toast_16522                | TOAST table | postgres
+ pg_toast           | pg_toast_16527                | TOAST table | postgres
+ pg_toast           | pg_toast_16532                | TOAST table | postgres
+ pg_toast           | pg_toast_16537                | TOAST table | postgres
+ pg_toast           | pg_toast_16547                | TOAST table | postgres
+ pg_toast           | pg_toast_16552                | TOAST table | postgres
+ pg_toast           | pg_toast_16560                | TOAST table | postgres
+ pg_toast           | pg_toast_16868                | TOAST table | postgres
+ pg_toast           | pg_toast_16873                | TOAST table | postgres
+ pg_toast           | pg_toast_16899                | TOAST table | postgres
+ pg_toast           | pg_toast_16910                | TOAST table | postgres
+ pg_toast           | pg_toast_16921                | TOAST table | postgres
+ pg_toast           | pg_toast_16927                | TOAST table | postgres
+ pg_toast           | pg_toast_16933                | TOAST table | postgres
+ pg_toast           | pg_toast_16944                | TOAST table | postgres
+ pg_toast           | pg_toast_16949                | TOAST table | postgres
+ pg_toast           | pg_toast_17028                | TOAST table | postgres
+ pg_toast           | pg_toast_17048                | TOAST table | postgres
+ pg_toast           | pg_toast_17060                | TOAST table | postgres
+ pg_toast           | pg_toast_17072                | TOAST table | postgres
+ pg_toast           | pg_toast_17093                | TOAST table | postgres
+ pg_toast           | pg_toast_17100                | TOAST table | postgres
+ pg_toast           | pg_toast_17135                | TOAST table | postgres
+ pg_toast           | pg_toast_17140                | TOAST table | postgres
+ pg_toast           | pg_toast_17146                | TOAST table | postgres
+ pg_toast           | pg_toast_17169                | TOAST table | postgres
+ pg_toast           | pg_toast_17191                | TOAST table | postgres
+ pg_toast           | pg_toast_17216                | TOAST table | postgres
+ pg_toast           | pg_toast_17223                | TOAST table | postgres
+ pg_toast           | pg_toast_17229                | TOAST table | postgres
+ pg_toast           | pg_toast_17235                | TOAST table | postgres
+ pg_toast           | pg_toast_17259                | TOAST table | postgres
+ pg_toast           | pg_toast_17264                | TOAST table | postgres
+ pg_toast           | pg_toast_17270                | TOAST table | postgres
+ pg_toast           | pg_toast_17282                | TOAST table | postgres
+ pg_toast           | pg_toast_17303                | TOAST table | postgres
+ pg_toast           | pg_toast_17313                | TOAST table | postgres
+ pg_toast           | pg_toast_17330                | TOAST table | postgres
+ pg_toast           | pg_toast_17372                | TOAST table | postgres
+ pg_toast           | pg_toast_17385                | TOAST table | postgres
+ pg_toast           | pg_toast_17400                | TOAST table | postgres
+ pg_toast           | pg_toast_17408                | TOAST table | postgres
+ pg_toast           | pg_toast_17428                | TOAST table | postgres
+ pg_toast           | pg_toast_17448                | TOAST table | postgres
+ pg_toast           | pg_toast_17455                | TOAST table | postgres
+ pg_toast           | pg_toast_17467                | TOAST table | postgres
+ pg_toast           | pg_toast_17474                | TOAST table | postgres
+ pg_toast           | pg_toast_17488                | TOAST table | postgres
+ pg_toast           | pg_toast_17493                | TOAST table | postgres
+ pg_toast           | pg_toast_17500                | TOAST table | postgres
+ pg_toast           | pg_toast_17512                | TOAST table | postgres
+ pg_toast           | pg_toast_17532                | TOAST table | postgres
+ pg_toast           | pg_toast_17537                | TOAST table | postgres
+ pg_toast           | pg_toast_17548                | TOAST table | postgres
+ pg_toast           | pg_toast_17557                | TOAST table | postgres
+ pg_toast           | pg_toast_17568                | TOAST table | postgres
+ pg_toast           | pg_toast_2328                 | TOAST table | postgres
+ pg_toast           | pg_toast_2396                 | TOAST table | postgres
+ pg_toast           | pg_toast_2600                 | TOAST table | postgres
+ pg_toast           | pg_toast_2604                 | TOAST table | postgres
+ pg_toast           | pg_toast_2606                 | TOAST table | postgres
+ pg_toast           | pg_toast_2609                 | TOAST table | postgres
+ pg_toast           | pg_toast_2612                 | TOAST table | postgres
+ pg_toast           | pg_toast_2615                 | TOAST table | postgres
+ pg_toast           | pg_toast_2618                 | TOAST table | postgres
+ pg_toast           | pg_toast_2619                 | TOAST table | postgres
+ pg_toast           | pg_toast_2620                 | TOAST table | postgres
+ pg_toast           | pg_toast_2964                 | TOAST table | postgres
+ pg_toast           | pg_toast_3079                 | TOAST table | postgres
+ pg_toast           | pg_toast_3118                 | TOAST table | postgres
+ pg_toast           | pg_toast_3256                 | TOAST table | postgres
+ pg_toast           | pg_toast_3350                 | TOAST table | postgres
+ pg_toast           | pg_toast_3381                 | TOAST table | postgres
+ pg_toast           | pg_toast_3394                 | TOAST table | postgres
+ pg_toast           | pg_toast_3429                 | TOAST table | postgres
+ pg_toast           | pg_toast_3456                 | TOAST table | postgres
+ pg_toast           | pg_toast_3466                 | TOAST table | postgres
+ pg_toast           | pg_toast_3592                 | TOAST table | postgres
+ pg_toast           | pg_toast_3596                 | TOAST table | postgres
+ pg_toast           | pg_toast_3600                 | TOAST table | postgres
+ pg_toast           | pg_toast_6000                 | TOAST table | postgres
+ pg_toast           | pg_toast_6100                 | TOAST table | postgres
+ pg_toast           | pg_toast_6106                 | TOAST table | postgres
+ pg_toast           | pg_toast_6243                 | TOAST table | postgres
+ pg_toast           | pg_toast_826                  | TOAST table | postgres
+ webapi             | analysis_execution            | table       | postgres
+ webapi             | batch_job_execution           | table       | postgres
+ webapi             | batch_job_execution_context   | table       | postgres
+ webapi             | batch_job_execution_params    | table       | postgres
+ webapi             | batch_job_instance            | table       | postgres
+ webapi             | batch_step_execution          | table       | postgres
+ webapi             | batch_step_execution_context  | table       | postgres
+ webapi             | cca                           | table       | postgres
+ webapi             | cca_execution                 | table       | postgres
+ webapi             | cca_execution_ext             | table       | postgres
+ webapi             | cohort                        | table       | postgres
+ webapi             | cohort_concept_map            | table       | postgres
+ webapi             | cohort_definition             | table       | postgres
+ webapi             | cohort_definition_details     | table       | postgres
+ webapi             | cohort_features               | table       | postgres
+ webapi             | cohort_features_analysis_ref  | table       | postgres
+ webapi             | cohort_features_dist          | table       | postgres
+ webapi             | cohort_features_ref           | table       | postgres
+ webapi             | cohort_generation_info        | table       | postgres
+ webapi             | cohort_inclusion              | table       | postgres
+ webapi             | cohort_inclusion_result       | table       | postgres
+ webapi             | cohort_inclusion_stats        | table       | postgres
+ webapi             | cohort_study                  | table       | postgres
+ webapi             | cohort_summary_stats          | table       | postgres
+ webapi             | concept_of_interest           | table       | postgres
+ webapi             | concept_set                   | table       | postgres
+ webapi             | concept_set_generation_info   | table       | postgres
+ webapi             | concept_set_item              | table       | postgres
+ webapi             | concept_set_negative_controls | table       | postgres
+ webapi             | drug_hoi_evidence             | table       | postgres
+ webapi             | drug_hoi_relationship         | table       | postgres
+ webapi             | drug_labels                   | table       | postgres
+ webapi             | evidence_sources              | table       | postgres
+ webapi             | exampleapp_widget             | table       | postgres
+ webapi             | feas_study_generation_info    | table       | postgres
+ webapi             | feas_study_inclusion_stats    | table       | postgres
+ webapi             | feas_study_index_stats        | table       | postgres
+ webapi             | feas_study_result             | table       | postgres
+ webapi             | feasibility_inclusion         | table       | postgres
+ webapi             | feasibility_study             | table       | postgres
+ webapi             | flyway_schema_history         | table       | postgres
+ webapi             | heracles_analysis             | table       | postgres
+ webapi             | heracles_heel_results         | table       | postgres
+ webapi             | heracles_results              | table       | postgres
+ webapi             | heracles_results_dist         | table       | postgres
+ webapi             | heracles_visualization_data   | table       | postgres
+ webapi             | input_files                   | table       | postgres
+ webapi             | ir_analysis                   | table       | postgres
+ webapi             | ir_analysis_details           | table       | postgres
+ webapi             | ir_analysis_dist              | table       | postgres
+ webapi             | ir_analysis_result            | table       | postgres
+ webapi             | ir_analysis_strata_stats      | table       | postgres
+ webapi             | ir_execution                  | table       | postgres
+ webapi             | ir_strata                     | table       | postgres
+ webapi             | laertes_summary               | table       | postgres
+ webapi             | output_files                  | table       | postgres
+ webapi             | penelope_laertes_uni_pivot    | table       | postgres
+ webapi             | penelope_laertes_universe     | table       | postgres
+ webapi             | plp                           | table       | postgres
+ webapi             | sec_permission                | table       | postgres
+ webapi             | sec_role                      | table       | postgres
+ webapi             | sec_role_permission           | table       | postgres
+ webapi             | sec_user                      | table       | postgres
+ webapi             | sec_user_role                 | table       | postgres
+ webapi             | source                        | table       | postgres
+ webapi             | source_daimon                 | table       | postgres
+ webapi_security    | security                      | table       | postgres

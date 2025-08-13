@@ -1,0 +1,106 @@
+Running notes
+I am using demo2 namespace for this exercise. The cluster is running and serving ATLAS on ingress with link  203-101-238-17.nip.io/atlas
+
+1. I can re-use the application db files and create a postgres instance with persistence. I need to remove unwanted script and check what passwords are needed. 
+2. I can look into the db broadsea db database and figure out what are essentials for a CDM. 
+3. I have successfully created postgres cdm2 database with a secret.
+4. Next attempt to validate it by logging in via the other onboard postgres instances. 
+
+How did I verify it 
+
+===========================
+The default admin user for the official PostgreSQL Docker container is postgres.
+
+When you run the container without specifying a different user via the POSTGRES_USER environment variable, the container automatically creates a superuser named postgres. This user also has a database created with the same name, postgres, by default.
+
+It is important to note that while the user is set to postgres by default, you must still provide a password for this user by setting the POSTGRES_PASSWORD environment variable. If you don't, the container will not run.
+
+-------------------------
+I used following commands.
+
+The postgres container is the application db. 
+
+kubectl -n demo2 exec -it deployment.apps/postgres -- bash
+
+psql -U postgres -h postgres-cdm2 -p 5432
+
+password as in the secret file. 
+
+=================================================
+
+
+Next task getting the script file into the container / pvc. 
+
+Use the following command. 
+# Using the -n flag
+kubectl cp config.yaml my-app-pod:/etc/configs/config.yaml -n my-namespace
+
+Local file location: C:\Users\audd0001\Syn_CDM.backup
+
+kubectl -n demo2 cp Syn_CDM.backup postgres-cdm2-9d7fc7d69-gp9x2:/tmp/Syn_CDM.backup
+
+The data got transferred very slowly to the temp location on the pod. 
+
+Next I will restore the backup to the postgres database. 
+========================
+
+Restoring the database
+
+kubectl -n demo2 exec -it postgres-cdm2-9d7fc7d69-gp9x2 -- pg_restore --verbose --clean --no-acl --no-owner -U postgres -d postgres /tmp/Syn_CDM.backup
+
+
+
+==========================================
+
+Restoration succeeded after increase of pv to 20Gi.
+
+What comes next? adding the CDM as a source to the ATLAS implementation. 
+
+
+======================================
+
+I added the CDM db but the schemas don't match. 
+
+So what am I expected to do?
+
+Revise the CDM setup yaml following the https://github.com/OHDSI/WebAPI/wiki/CDM-Configuration
+
+# the table_qualifiers are the actual schema in the tables.  
+
+    INSERT INTO webapi.source (source_id, source_name, source_key, source_connection, source_dialect, is_cache_enabled) 
+    SELECT nextval('webapi.source_sequence') , 'CDM-Australian-Synth', 'CDM-Australian-Synth', 'jdbc:postgresql://postgres-cdm2:5432/postgres?user=postgres&password=admin-cdm2', 'postgresql', true;
+
+    -- CDM tables and it is read only. 
+    INSERT INTO webapi.source_daimon (source_daimon_id, source_id, daimon_type, table_qualifier, priority) 
+    SELECT nextval('webapi.source_daimon_sequence'), source_id, 0, 'cdm_synthea', 0
+    FROM webapi.source
+    WHERE source_key = 'CDM-Australian-Synth'
+    ;
+
+    -- vocabulary table and it is read only. 
+    INSERT INTO webapi.source_daimon (source_daimon_id, source_id, daimon_type, table_qualifier, priority) 
+    SELECT nextval('webapi.source_daimon_sequence'), source_id, 1, 'cdm_synthea', 1
+    FROM webapi.source
+    WHERE source_key = 'CDM-Australian-Synth'
+    ;
+
+    -- result tables and it needs read write access. 
+    INSERT INTO webapi.source_daimon (source_daimon_id, source_id, daimon_type, table_qualifier, priority) 
+    SELECT nextval('webapi.source_daimon_sequence'), source_id, 2, 'results_synthea', 1
+    FROM webapi.source
+    WHERE source_key = 'CDM-Australian-Synth'
+    ;
+
+    -- temp tables and it needs read write access. 
+    INSERT INTO webapi.source_daimon (source_daimon_id, source_id, daimon_type, table_qualifier, priority) 
+    SELECT nextval('webapi.source_daimon_sequence'), source_id, 5, 'temp_synthea', 0
+    FROM webapi.source
+    WHERE source_key = 'CDM-Australian-Synth'
+    ;
+
+
+
+Task: I had to add a temp schema with read write access and a table to ensure the temp schema exists.  
+
+
+==============================

@@ -1,0 +1,439 @@
+postgres -d postgres /tmp/Syn_CDM.backup
+Defaulted container "postgres-cdm2" out of: postgres-cdm2, create-folder (init)
+pg_restore: connecting to database for restore
+pg_restore: dropping INDEX idx_ard_s2
+pg_restore: while PROCESSING TOC:
+pg_restore: from TOC entry 3802; 1259 42473 INDEX idx_ard_s2 rward
+pg_restore: error: could not execute query: ERROR:  schema "results_synthea" does not exist
+Command was: DROP INDEX results_synthea.idx_ard_s2;
+pg_restore: dropping INDEX idx_ard_s1
+pg_restore: from TOC entry 3801; 1259 42472 INDEX idx_ard_s1 rward
+pg_restore: error: could not execute query: ERROR:  schema "results_synthea" does not exist
+Command was: DROP INDEX results_synthea.idx_ard_s1;
+pg_restore: dropping INDEX idx_ard_aid
+pg_restore: from TOC entry 3800; 1259 42471 INDEX idx_ard_aid rward
+pg_restore: error: could not execute query: ERROR:  schema "results_synthea" does not exist
+Command was: DROP INDEX results_synthea.idx_ard_aid;
+pg_restore: dropping INDEX idx_ar_s2
+pg_restore: from TOC entry 3799; 1259 42468 INDEX idx_ar_s2 rward
+pg_restore: error: could not execute query: ERROR:  schema "results_synthea" does not exist
+Command was: DROP INDEX results_synthea.idx_ar_s2;
+pg_restore: dropping INDEX idx_ar_s1
+pg_restore: from TOC entry 3798; 1259 42467 INDEX idx_ar_s1 rward
+pg_restore: error: could not execute query: ERROR:  schema "results_synthea" does not exist
+Command was: DROP INDEX results_synthea.idx_ar_s1;
+pg_restore: dropping INDEX idx_ar_aid_s1234
+pg_restore: from TOC entry 3797; 1259 42470 INDEX idx_ar_aid_s1234 rward
+pg_restore: error: could not execute query: ERROR:  schema "results_synthea" does not exist
+Command was: DROP INDEX results_synthea.idx_ar_aid_s1234;
+pg_restore: dropping INDEX idx_ar_aid_s1
+pg_restore: from TOC entry 3796; 1259 42469 INDEX idx_ar_aid_s1 rward
+pg_restore: error: could not execute query: ERROR:  schema "results_synthea" does not exist
+Command was: DROP INDEX results_synthea.idx_ar_aid_s1;
+pg_restore: dropping INDEX idx_ar_aid
+pg_restore: from TOC entry 3795; 1259 42466 INDEX idx_ar_aid rward
+pg_restore: error: could not execute query: ERROR:  schema "results_synthea" does not exist
+Command was: DROP INDEX results_synthea.idx_ar_aid;
+pg_restore: dropping TABLE achilles_results_dist
+pg_restore: from TOC entry 287; 1259 42461 TABLE achilles_results_dist rward
+pg_restore: error: could not execute query: ERROR:  schema "results_synthea" does not exist
+Command was: DROP TABLE results_synthea.achilles_results_dist;
+pg_restore: dropping TABLE achilles_results
+pg_restore: from TOC entry 286; 1259 42456 TABLE achilles_results rward
+pg_restore: error: could not execute query: ERROR:  schema "results_synthea" does not exist
+Command was: DROP TABLE results_synthea.achilles_results;
+pg_restore: dropping TABLE achilles_analysis
+pg_restore: from TOC entry 285; 1259 40961 TABLE achilles_analysis rward
+pg_restore: error: could not execute query: ERROR:  schema "results_synthea" does not exist
+Command was: DROP TABLE results_synthea.achilles_analysis;
+pg_restore: dropping TABLE visit_occurrence_rollup
+pg_restore: from TOC entry 283; 1259 32660 TABLE visit_occurrence_rollup rward
+pg_restore: error: could not execute query: ERROR:  schema "native" does not exist
+Command was: DROP TABLE native.visit_occurrence_rollup;
+pg_restore: dropping TABLE visit_detail_rollup
+pg_restore: from TOC entry 284; 1259 32663 TABLE visit_detail_rollup rward
+pg_restore: error: could not execute query: ERROR:  schema "native" does not exist
+Command was: DROP TABLE native.visit_detail_rollup;
+pg_restore: dropping TABLE supplies
+pg_restore: from TOC entry 280; 1259 32536 TABLE supplies rward
+pg_restore: error: could not execute query: ERROR:  schema "native" does not exist
+Command was: DROP TABLE native.supplies;
+pg_restore: dropping TABLE providers
+pg_restore: from TOC entry 274; 1259 32508 TABLE providers rward
+pg_restore: error: could not execute query: ERROR:  schema "native" does not exist
+Command was: DROP TABLE native.providers;
+pg_restore: dropping TABLE procedures
+pg_restore: from TOC entry 273; 1259 32503 TABLE procedures rward
+pg_restore: error: could not execute query: ERROR:  schema "native" does not exist
+Command was: DROP TABLE native.procedures;
+pg_restore: dropping TABLE payers
+pg_restore: from TOC entry 279; 1259 32531 TABLE payers rward
+pg_restore: error: could not execute query: ERROR:  schema "native" does not exist
+Command was: DROP TABLE native.payers;
+pg_restore: dropping TABLE payer_transitions
+pg_restore: from TOC entry 278; 1259 32528 TABLE payer_transitions rward
+pg_restore: error: could not execute query: ERROR:  schema "native" does not exist
+Command was: DROP TABLE native.payer_transitions;
+pg_restore: dropping TABLE patients
+pg_restore: from TOC entry 272; 1259 32498 TABLE patients rward
+pg_restore: error: could not execute query: ERROR:  schema "native" does not exist
+Command was: DROP TABLE native.patients;
+pg_restore: dropping TABLE organizations
+pg_restore: from TOC entry 271; 1259 32493 TABLE organizations rward
+pg_restore: error: could not execute query: ERROR:  schema "native" does not exist
+Command was: DROP TABLE native.organizations;
+pg_restore: dropping TABLE observations
+pg_restore: from TOC entry 270; 1259 32488 TABLE observations rward
+pg_restore: error: could not execute query: ERROR:  schema "native" does not exist
+Command was: DROP TABLE native.observations;
+pg_restore: dropping TABLE medications
+pg_restore: from TOC entry 269; 1259 32483 TABLE medications rward
+pg_restore: error: could not execute query: ERROR:  schema "native" does not exist
+Command was: DROP TABLE native.medications;
+pg_restore: dropping TABLE immunizations
+pg_restore: from TOC entry 267; 1259 32473 TABLE immunizations rward
+pg_restore: error: could not execute query: ERROR:  schema "native" does not exist
+Command was: DROP TABLE native.immunizations;
+pg_restore: dropping TABLE imaging_studies
+pg_restore: from TOC entry 268; 1259 32478 TABLE imaging_studies rward
+pg_restore: error: could not execute query: ERROR:  schema "native" does not exist
+Command was: DROP TABLE native.imaging_studies;
+pg_restore: dropping TABLE encounters
+pg_restore: from TOC entry 266; 1259 32468 TABLE encounters rward
+pg_restore: error: could not execute query: ERROR:  schema "native" does not exist
+Command was: DROP TABLE native.encounters;
+pg_restore: dropping TABLE devices
+pg_restore: from TOC entry 275; 1259 32513 TABLE devices rward
+pg_restore: error: could not execute query: ERROR:  schema "native" does not exist
+Command was: DROP TABLE native.devices;
+pg_restore: dropping TABLE conditions
+pg_restore: from TOC entry 265; 1259 32465 TABLE conditions rward
+pg_restore: error: could not execute query: ERROR:  schema "native" does not exist
+Command was: DROP TABLE native.conditions;
+pg_restore: dropping TABLE claims_transactions
+pg_restore: from TOC entry 277; 1259 32523 TABLE claims_transactions rward
+pg_restore: error: could not execute query: ERROR:  schema "native" does not exist
+Command was: DROP TABLE native.claims_transactions;
+pg_restore: dropping TABLE claims
+pg_restore: from TOC entry 276; 1259 32518 TABLE claims rward
+pg_restore: error: could not execute query: ERROR:  schema "native" does not exist
+Command was: DROP TABLE native.claims;
+pg_restore: dropping TABLE careplans
+pg_restore: from TOC entry 264; 1259 32460 TABLE careplans rward
+pg_restore: error: could not execute query: ERROR:  schema "native" does not exist
+Command was: DROP TABLE native.careplans;
+pg_restore: dropping TABLE allergies
+pg_restore: from TOC entry 263; 1259 32455 TABLE allergies rward
+pg_restore: error: could not execute query: ERROR:  schema "native" does not exist
+Command was: DROP TABLE native.allergies;
+pg_restore: dropping TABLE vocabulary
+pg_restore: from TOC entry 253; 1259 29499 TABLE vocabulary rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.vocabulary;
+pg_restore: dropping TABLE visit_occurrence
+pg_restore: from TOC entry 227; 1259 29397 TABLE visit_occurrence rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.visit_occurrence;
+pg_restore: dropping TABLE visit_detail
+pg_restore: from TOC entry 228; 1259 29400 TABLE visit_detail rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.visit_detail;
+pg_restore: dropping TABLE states_map
+pg_restore: from TOC entry 282; 1259 32649 TABLE states_map rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.states_map;
+pg_restore: dropping TABLE specimen
+pg_restore: from TOC entry 238; 1259 29442 TABLE specimen rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.specimen;
+pg_restore: dropping TABLE source_to_concept_map
+pg_restore: from TOC entry 281; 1259 32631 TABLE source_to_concept_map rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.source_to_concept_map;
+pg_restore: dropping TABLE relationship
+pg_restore: from TOC entry 257; 1259 29513 TABLE relationship rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.relationship;
+pg_restore: dropping TABLE provider
+pg_restore: from TOC entry 242; 1259 29458 TABLE provider rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.provider;
+pg_restore: dropping TABLE procedure_occurrence
+pg_restore: from TOC entry 231; 1259 29411 TABLE procedure_occurrence rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.procedure_occurrence;
+pg_restore: dropping TABLE person
+pg_restore: from TOC entry 225; 1259 29391 TABLE person rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.person;
+pg_restore: dropping TABLE payer_plan_period
+pg_restore: from TOC entry 243; 1259 29461 TABLE payer_plan_period rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.payer_plan_period;
+pg_restore: dropping TABLE observation_period
+pg_restore: from TOC entry 226; 1259 29394 TABLE observation_period rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.observation_period;
+pg_restore: dropping TABLE observation
+pg_restore: from TOC entry 234; 1259 29424 TABLE observation rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.observation;
+pg_restore: dropping TABLE note_nlp
+pg_restore: from TOC entry 237; 1259 29437 TABLE note_nlp rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.note_nlp;
+pg_restore: dropping TABLE note
+pg_restore: from TOC entry 236; 1259 29432 TABLE note rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.note;
+pg_restore: dropping TABLE metadata
+pg_restore: from TOC entry 250; 1259 29486 TABLE metadata rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.metadata;
+pg_restore: dropping TABLE measurement
+pg_restore: from TOC entry 233; 1259 29419 TABLE measurement rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.measurement;
+pg_restore: dropping TABLE location
+pg_restore: from TOC entry 240; 1259 29450 TABLE location rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.location;
+pg_restore: dropping TABLE fact_relationship
+pg_restore: from TOC entry 239; 1259 29447 TABLE fact_relationship rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.fact_relationship;
+pg_restore: dropping TABLE episode_event
+pg_restore: from TOC entry 249; 1259 29483 TABLE episode_event rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.episode_event;
+pg_restore: dropping TABLE episode
+pg_restore: from TOC entry 248; 1259 29480 TABLE episode rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.episode;
+pg_restore: dropping TABLE drug_strength
+pg_restore: from TOC entry 260; 1259 29527 TABLE drug_strength rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.drug_strength;
+pg_restore: dropping TABLE drug_exposure
+pg_restore: from TOC entry 230; 1259 29406 TABLE drug_exposure rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.drug_exposure;
+pg_restore: dropping TABLE drug_era
+pg_restore: from TOC entry 245; 1259 29469 TABLE drug_era rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.drug_era;
+pg_restore: dropping TABLE dose_era
+pg_restore: from TOC entry 246; 1259 29472 TABLE dose_era rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.dose_era;
+pg_restore: dropping TABLE domain
+pg_restore: from TOC entry 254; 1259 29504 TABLE domain rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.domain;
+pg_restore: dropping TABLE device_exposure
+pg_restore: from TOC entry 232; 1259 29414 TABLE device_exposure rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.device_exposure;
+pg_restore: dropping TABLE death
+pg_restore: from TOC entry 235; 1259 29429 TABLE death rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.death;
+pg_restore: dropping TABLE cost
+pg_restore: from TOC entry 244; 1259 29464 TABLE cost rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.cost;
+pg_restore: dropping TABLE condition_occurrence
+pg_restore: from TOC entry 229; 1259 29403 TABLE condition_occurrence rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.condition_occurrence;
+pg_restore: dropping TABLE condition_era
+pg_restore: from TOC entry 247; 1259 29477 TABLE condition_era rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.condition_era;
+pg_restore: dropping TABLE concept_synonym
+pg_restore: from TOC entry 258; 1259 29516 TABLE concept_synonym rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.concept_synonym;
+pg_restore: dropping TABLE concept_relationship
+pg_restore: from TOC entry 256; 1259 29510 TABLE concept_relationship rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.concept_relationship;
+pg_restore: dropping TABLE concept_class
+pg_restore: from TOC entry 255; 1259 29507 TABLE concept_class rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.concept_class;
+pg_restore: dropping TABLE concept_ancestor
+pg_restore: from TOC entry 259; 1259 29521 TABLE concept_ancestor rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.concept_ancestor;
+pg_restore: dropping TABLE concept
+pg_restore: from TOC entry 252; 1259 29496 TABLE concept rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.concept;
+pg_restore: dropping TABLE cohort_definition
+pg_restore: from TOC entry 262; 1259 29535 TABLE cohort_definition rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.cohort_definition;
+pg_restore: dropping TABLE cohort
+pg_restore: from TOC entry 261; 1259 29532 TABLE cohort rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.cohort;
+pg_restore: dropping TABLE cdm_source
+pg_restore: from TOC entry 251; 1259 29491 TABLE cdm_source rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.cdm_source;
+pg_restore: dropping TABLE care_site
+pg_restore: from TOC entry 241; 1259 29455 TABLE care_site rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP TABLE cdm_synthea.care_site;
+pg_restore: dropping SCHEMA results_synthea
+pg_restore: from TOC entry 10; 2615 40960 SCHEMA results_synthea rward
+pg_restore: error: could not execute query: ERROR:  schema "results_synthea" does not exist
+Command was: DROP SCHEMA results_synthea;
+pg_restore: dropping SCHEMA native
+pg_restore: from TOC entry 9; 2615 32454 SCHEMA native rward
+pg_restore: error: could not execute query: ERROR:  schema "native" does not exist
+Command was: DROP SCHEMA native;
+pg_restore: dropping SCHEMA cdm_synthea
+pg_restore: from TOC entry 6; 2615 29390 SCHEMA cdm_synthea rward
+pg_restore: error: could not execute query: ERROR:  schema "cdm_synthea" does not exist
+Command was: DROP SCHEMA cdm_synthea;
+pg_restore: creating SCHEMA "cdm_synthea"
+pg_restore: creating SCHEMA "native"
+pg_restore: creating SCHEMA "results_synthea"
+pg_restore: creating TABLE "cdm_synthea.care_site"
+pg_restore: creating TABLE "cdm_synthea.cdm_source"
+pg_restore: creating TABLE "cdm_synthea.cohort"
+pg_restore: creating TABLE "cdm_synthea.cohort_definition"
+pg_restore: creating TABLE "cdm_synthea.concept"
+pg_restore: creating TABLE "cdm_synthea.concept_ancestor"
+pg_restore: creating TABLE "cdm_synthea.concept_class"
+pg_restore: creating TABLE "cdm_synthea.concept_relationship"
+pg_restore: creating TABLE "cdm_synthea.concept_synonym"
+pg_restore: creating TABLE "cdm_synthea.condition_era"
+pg_restore: creating TABLE "cdm_synthea.condition_occurrence"
+pg_restore: creating TABLE "cdm_synthea.cost"
+pg_restore: creating TABLE "cdm_synthea.death"
+pg_restore: creating TABLE "cdm_synthea.device_exposure"
+pg_restore: creating TABLE "cdm_synthea.domain"
+pg_restore: creating TABLE "cdm_synthea.dose_era"
+pg_restore: creating TABLE "cdm_synthea.drug_era"
+pg_restore: creating TABLE "cdm_synthea.drug_exposure"
+pg_restore: creating TABLE "cdm_synthea.drug_strength"
+pg_restore: creating TABLE "cdm_synthea.episode"
+pg_restore: creating TABLE "cdm_synthea.episode_event"
+pg_restore: creating TABLE "cdm_synthea.fact_relationship"
+pg_restore: creating TABLE "cdm_synthea.location"
+pg_restore: creating TABLE "cdm_synthea.measurement"
+pg_restore: creating TABLE "cdm_synthea.metadata"
+pg_restore: creating TABLE "cdm_synthea.note"
+pg_restore: creating TABLE "cdm_synthea.note_nlp"
+pg_restore: creating TABLE "cdm_synthea.observation"
+pg_restore: creating TABLE "cdm_synthea.observation_period"
+pg_restore: creating TABLE "cdm_synthea.payer_plan_period"
+pg_restore: creating TABLE "cdm_synthea.person"
+pg_restore: creating TABLE "cdm_synthea.procedure_occurrence"
+pg_restore: creating TABLE "cdm_synthea.provider"
+pg_restore: creating TABLE "cdm_synthea.relationship"
+pg_restore: creating TABLE "cdm_synthea.source_to_concept_map"
+pg_restore: creating TABLE "cdm_synthea.specimen"
+pg_restore: creating TABLE "cdm_synthea.states_map"
+pg_restore: creating TABLE "cdm_synthea.visit_detail"
+pg_restore: creating TABLE "cdm_synthea.visit_occurrence"
+pg_restore: creating TABLE "cdm_synthea.vocabulary"
+pg_restore: creating TABLE "native.allergies"
+pg_restore: creating TABLE "native.careplans"
+pg_restore: creating TABLE "native.claims"
+pg_restore: creating TABLE "native.claims_transactions"
+pg_restore: creating TABLE "native.conditions"
+pg_restore: creating TABLE "native.devices"
+pg_restore: creating TABLE "native.encounters"
+pg_restore: creating TABLE "native.imaging_studies"
+pg_restore: creating TABLE "native.immunizations"
+pg_restore: creating TABLE "native.medications"
+pg_restore: creating TABLE "native.observations"
+pg_restore: creating TABLE "native.organizations"
+pg_restore: creating TABLE "native.patients"
+pg_restore: creating TABLE "native.payer_transitions"
+pg_restore: creating TABLE "native.payers"
+pg_restore: creating TABLE "native.procedures"
+pg_restore: creating TABLE "native.providers"
+pg_restore: creating TABLE "native.supplies"
+pg_restore: creating TABLE "native.visit_detail_rollup"
+pg_restore: creating TABLE "native.visit_occurrence_rollup"
+pg_restore: creating TABLE "results_synthea.achilles_analysis"
+pg_restore: creating TABLE "results_synthea.achilles_results"
+pg_restore: creating TABLE "results_synthea.achilles_results_dist"
+pg_restore: processing data for table "cdm_synthea.care_site"
+pg_restore: processing data for table "cdm_synthea.cdm_source"
+pg_restore: processing data for table "cdm_synthea.cohort"
+pg_restore: processing data for table "cdm_synthea.cohort_definition"
+pg_restore: processing data for table "cdm_synthea.concept"
+pg_restore: processing data for table "cdm_synthea.concept_ancestor"
+pg_restore: processing data for table "cdm_synthea.concept_class"
+pg_restore: processing data for table "cdm_synthea.concept_relationship"
+pg_restore: processing data for table "cdm_synthea.concept_synonym"
+pg_restore: processing data for table "cdm_synthea.condition_era"
+pg_restore: processing data for table "cdm_synthea.condition_occurrence"
+pg_restore: processing data for table "cdm_synthea.cost"
+pg_restore: processing data for table "cdm_synthea.death"
+pg_restore: processing data for table "cdm_synthea.device_exposure"
+pg_restore: processing data for table "cdm_synthea.domain"
+pg_restore: processing data for table "cdm_synthea.dose_era"
+pg_restore: processing data for table "cdm_synthea.drug_era"
+pg_restore: processing data for table "cdm_synthea.drug_exposure"
+pg_restore: processing data for table "cdm_synthea.drug_strength"
+pg_restore: processing data for table "cdm_synthea.episode"
+pg_restore: processing data for table "cdm_synthea.episode_event"
+pg_restore: processing data for table "cdm_synthea.fact_relationship"
+pg_restore: processing data for table "cdm_synthea.location"
+pg_restore: processing data for table "cdm_synthea.measurement"
+pg_restore: processing data for table "cdm_synthea.metadata"
+pg_restore: processing data for table "cdm_synthea.note"
+pg_restore: processing data for table "cdm_synthea.note_nlp"
+pg_restore: processing data for table "cdm_synthea.observation"
+pg_restore: processing data for table "cdm_synthea.observation_period"
+pg_restore: processing data for table "cdm_synthea.payer_plan_period"
+pg_restore: processing data for table "cdm_synthea.person"
+pg_restore: processing data for table "cdm_synthea.procedure_occurrence"
+pg_restore: processing data for table "cdm_synthea.provider"
+pg_restore: processing data for table "cdm_synthea.relationship"
+pg_restore: processing data for table "cdm_synthea.source_to_concept_map"
+pg_restore: processing data for table "cdm_synthea.specimen"
+pg_restore: processing data for table "cdm_synthea.states_map"
+pg_restore: processing data for table "cdm_synthea.visit_detail"
+pg_restore: processing data for table "cdm_synthea.visit_occurrence"
+pg_restore: processing data for table "cdm_synthea.vocabulary"
+pg_restore: processing data for table "native.allergies"
+pg_restore: processing data for table "native.careplans"
+pg_restore: processing data for table "native.claims"
+pg_restore: processing data for table "native.claims_transactions"
+pg_restore: processing data for table "native.conditions"
+pg_restore: processing data for table "native.devices"
+pg_restore: processing data for table "native.encounters"
+pg_restore: processing data for table "native.imaging_studies"
+pg_restore: processing data for table "native.immunizations"
+pg_restore: processing data for table "native.medications"
+pg_restore: processing data for table "native.observations"
+pg_restore: processing data for table "native.organizations"
+pg_restore: processing data for table "native.patients"
+pg_restore: processing data for table "native.payer_transitions"
+pg_restore: processing data for table "native.payers"
+pg_restore: processing data for table "native.procedures"
+pg_restore: processing data for table "native.providers"
+pg_restore: processing data for table "native.supplies"
+pg_restore: processing data for table "native.visit_detail_rollup"
+pg_restore: processing data for table "native.visit_occurrence_rollup"
+pg_restore: processing data for table "results_synthea.achilles_analysis"
+pg_restore: processing data for table "results_synthea.achilles_results"
+pg_restore: processing data for table "results_synthea.achilles_results_dist"
+pg_restore: creating INDEX "results_synthea.idx_ar_aid"
+pg_restore: creating INDEX "results_synthea.idx_ar_aid_s1"
+pg_restore: creating INDEX "results_synthea.idx_ar_aid_s1234"
+pg_restore: creating INDEX "results_synthea.idx_ar_s1"
+pg_restore: creating INDEX "results_synthea.idx_ar_s2"
+pg_restore: creating INDEX "results_synthea.idx_ard_aid"
+pg_restore: creating INDEX "results_synthea.idx_ard_s1"
+pg_restore: creating INDEX "results_synthea.idx_ard_s2"
+pg_restore: warning: errors ignored on restore: 74
+command terminated with exit code 1

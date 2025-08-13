@@ -1,0 +1,50 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/issuer: letsencrypt-prod
+    meta.helm.sh/release-name: atlas-demo1
+    meta.helm.sh/release-namespace: demo1
+  creationTimestamp: "2025-05-06T06:35:36Z"
+  generation: 3
+  labels:
+    app.kubernetes.io/managed-by: Helm
+  name: atlas
+  namespace: demo1
+  resourceVersion: "81944535"
+  uid: cb503865-144d-472d-8307-90edf4d1d1fe
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: 203-101-238-17.nip.io
+    http:
+      paths:
+      - backend:
+          service:
+            name: webapi
+            port:
+              number: 8080
+        path: /WebAPI
+        pathType: Prefix
+      - backend:
+          service:
+            name: atlas
+            port:
+              number: 8080
+        path: /atlas
+        pathType: Prefix
+      - backend:
+          service:
+            name: keycloak
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - 203-101-238-17.nip.io
+    secretName: quickstart-example-tls
+status:
+  loadBalancer:
+    ingress:
+    - ip: 203.101.238.17

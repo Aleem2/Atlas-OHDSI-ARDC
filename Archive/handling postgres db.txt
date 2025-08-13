@@ -1,4 +1,4 @@
-psql -U ohdsi_admin_user -h postgres -p 5432 -d OHDSI
+psql -U ohdsi_admin_user -h postgres -p 5432 -d ohdsi
 
 Where "-h postgres" is referring to the service in kubernetes. 
 
@@ -41,5 +41,10 @@ VALUES ('First Item', 'This is the first item in the database.');
 
 -- viewing schema
 SELECT * FROM information_schema.schemata;
+
+
+
+
+Use the \c command: The \c (or \connect) command, when used without any arguments, will show you the current connection details, including the database name.
 
 
