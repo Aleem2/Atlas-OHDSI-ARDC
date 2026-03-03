@@ -18,7 +18,7 @@ To deploy this implementation a Kubernetes cluster is needed. The suggested dime
 
 # Deploying Helm chart
 
-Helm chart is the preferred way of deployment as it simplifies the deployment. The relevant Atlas files are in the “Helm-chart” directory on the [Github repository](https://github.com/Aleem2/Atlas-OHDSI-ARDC/tree/main).The deployment process is outlined below:
+Helm chart is the preferred way of deployment as it simplifies the deployment. The relevant Atlas files are in the “Helm-chart” directory on the [Github repository](https://github.com/Aleem2/Atlas-OHDSI-ARDC/tree/helm-chart).The deployment process is outlined below:
 
 * **Create a namespace using the following command.**  
   * kubectl create ns demo1  
