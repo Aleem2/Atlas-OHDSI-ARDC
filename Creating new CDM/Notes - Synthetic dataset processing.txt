@@ -1,0 +1,23 @@
+General ideas -
+1. Given that I have the synthetic dataset from Roger, I want to run the Achilles processing to extract the results tables. 
+2. To do that I can run a Kubernetes Job with Achilles container and process the existing dataset. 
+3. Refresh the Atlas and WebAPI to verify if it worked. 
+4. Test it out on large dataset such as the one created by CSIRO. 
+
+
+----------------
+Achilles docker image 
+docker pull ohdsi/broadsea-achilles:sha-c40e549
+
+ohdsi/broadsea-achilles
+
+Simply run it as a deployment for testing. 
+When finished create a job to work on this. 
+kubectl -n demo2 create deployment achilles --image=ohdsi/broadsea-achilles:sha-c40e549 -- sleep infinity
+
+
+I want to create a achilles() with proper arguments and execute it. 
+
+The docs on achilles() is linked here. https://rdrr.io/github/OHDSI/Achilles/man/achilles.html#:~:text=Arguments,that%20contains%20OMOP%20CDM%20schema.
+
+
