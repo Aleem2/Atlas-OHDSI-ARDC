@@ -2,7 +2,7 @@
 
 The document outlines the architecture and the containerised deployment instructions for OHDSIs tool called [ATLAS](https://www.ohdsi.org/software-tools/). To make this deployment ready for demonstration it includes a sample CDM database from Broadsea. This implementation builds on existing containers of various components including [ATLAS](https://hub.docker.com/r/ohdsi/atlas), [WebAPI](https://hub.docker.com/r/ohdsi/webapi), [Postgres DB](https://hub.docker.com/_/postgres) and [a sample Broadsea CDM](https://hub.docker.com/r/ohdsi/broadsea-atlasdb). Finally for practicality the implementation outlines a method of adding a real world CDM using a Kubernetes job. 
 
-Note: This document assumes someone with basic knowledge of kubernetes is deploying it. Some helpful [Kuberenetes reference](https://kubernetes.io/docs/home/). 
+Note: This document assumes someone with basic knowledge of kubernetes is deploying it. A helpful [Kuberenetes reference](https://kubernetes.io/docs/home/). 
 
 # Architecture
 
@@ -18,7 +18,7 @@ To deploy this implementation a Kubernetes cluster is needed. The suggested dime
 
 # Deploying Helm chart
 
-Helm chart is the preferred way of deployment as it simplifies the deployment. The relevant Atlas files are in the “Helm-chart” directory on the [Github repository](https://github.com/Aleem2/Atlas-OHDSI-ARDC/tree/helm-chart). The deployment process is outlined below:
+Helm chart is the preferred way of deployment as it simplifies the deployment. The relevant Atlas files are in the “Helm-chart” directory on the [Github repository](https://github.com/Aleem2/Atlas-OHDSI-ARDC/tree/helm-chart).The deployment process is outlined below:
 
 * **Create a namespace using the following command.**  
   * kubectl create ns demo1  
@@ -40,7 +40,7 @@ Helm chart is the preferred way of deployment as it simplifies the deployment. T
   * Update the atlas config file with host details (203.101.238.248.nip.io) using the following command.  
     * kubectl \-n demo1 edit configmap/atlas-configmap  
     * kubectl \-n demo1 rollout restart deployment.apps/atlas 
-* **The application can be accessed on [https://203.101.238.248.nip.io/atlas](https://203.101.238.248.nip.io/atlas)**
+* **The application can be accessed on [http://203.101.238.248.nip.io/atlas](http://203.101.238.248.nip.io/atlas)**
 
 # Deploying Kubernetes Yamls (if you prefer not to use Helm chart)
 
@@ -84,6 +84,7 @@ This deployment is a collection of yaml files which translates the deployment in
   * kubectl \-n ohdsi create \-f new-CDM-setup-job.yaml  
   * Finally refresh the WebAPI to start serving the new CDM.  
   * kubectl \-n ohdsi rollout restart deploy/webapi
+  
 
 
   
